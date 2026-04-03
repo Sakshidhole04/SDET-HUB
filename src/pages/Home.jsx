@@ -21,6 +21,12 @@ export default function Home() {
           </Link>
         ))}
       </div>
+      <div style={{ height: 16 }} />
+      <Link to="/practice" className="topic-card practice-card">
+        <div className="card-icon">🧩</div>
+        <div className="card-title">Practice Editor</div>
+        <div className="card-count">12 coding challenges · Run in browser</div>
+      </Link>
     </div>
   );
 }

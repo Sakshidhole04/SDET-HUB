@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import TopicPage from './pages/TopicPage';
+import PracticeEditor from './pages/PracticeEditor';
 import './App.css';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
           </Link>
           <nav className="header-nav">
             <Link to="/" className="header-link active">✅ SDET</Link>
+            <Link to="/practice" className="header-link">🧩 Practice</Link>
             <a href="#" className="header-link">☕ Java Development</a>
           </nav>
         </header>
@@ -24,6 +26,10 @@ export default function App() {
             <Route
               path="/topic/:topicKey/:subtopicId"
               element={<><Sidebar /><main className="main-content"><TopicPage /></main></>}
+            />
+            <Route
+              path="/practice"
+              element={<><Sidebar /><PracticeEditor /></>}
             />
           </Routes>
         </div>

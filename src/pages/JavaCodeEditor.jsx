@@ -126,35 +126,41 @@ export default function JavaCodeEditor() {
     setRunTime(null);
     const start = Date.now();
     try {
-      const res = await fetch('https://emkc.org/api/v2/piston/execute', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          language: 'java',
-          version: '*',
-          files: [{ name: 'Main.java', content: code }],
-          stdin: input,
-        }),
-      });
-      if (!res.ok) throw new Error(`API error: ${res.status}`);
-      const data = await res.json();
+      // Judge0 CE — free public Java execution API, no key required
+      // language_id 62 = Java (OpenJDK 13.0.1)
+      const submitRes = await fetch(
+        'https://ce.judge0.com/submissions?base64_encoded=false&wait=true',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            language_id: 62,
+            source_code: code,
+            stdin: input,
+          }),
+        }
+      );
+      if (!submitRes.ok) throw new Error(`API error: ${submitRes.status}`);
+      const data = await submitRes.json();
       const elapsed = ((Date.now() - start) / 1000).toFixed(2);
       setRunTime(elapsed);
 
-      const compileStderr = data.compile?.stderr || '';
-      const runStdout = data.run?.stdout || '';
-      const runStderr = data.run?.stderr || '';
-      const runCode2 = data.run?.code ?? 0;
+      const compileOut = data.compile_output || '';
+      const stdout = data.stdout || '';
+      const stderr = data.stderr || '';
+      const statusDesc = data.status?.description || '';
 
-      if (compileStderr) {
-        setOutput(`Compilation Error:\n\n${compileStderr}`);
+      if (statusDesc === 'Compilation Error' || compileOut) {
+        setOutput(`Compilation Error:\n\n${compileOut || stderr}`);
         setStatus('error');
-      } else if (runCode2 !== 0 && runStderr) {
-        setOutput(`Runtime Error:\n\n${runStderr}`);
+      } else if (statusDesc === 'Runtime Error (NZEC)' || statusDesc.includes('Error') || stderr) {
+        setOutput(`Runtime Error (${statusDesc}):\n\n${stderr || compileOut}`);
+        setStatus('error');
+      } else if (statusDesc === 'Time Limit Exceeded') {
+        setOutput('Time Limit Exceeded — your program ran too long (max ~5s).');
         setStatus('error');
       } else {
-        const out = runStdout + (runStderr ? `\n[stderr]\n${runStderr}` : '');
-        setOutput(out || '(no output)');
+        setOutput(stdout || '(no output)');
         setStatus('success');
       }
     } catch (err) {

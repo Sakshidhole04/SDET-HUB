@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { javaCourses } from '../data/javaData';
+import { useProgress } from '../context/ProgressContext';
 
 export default function JavaSidebar() {
   const { chapterId, lessonId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const isEditor = location.pathname === '/java/editor';
+  const { isDone } = useProgress();
   const [expanded, setExpanded] = useState(() => chapterId ? { [chapterId]: true } : {});
 
   useEffect(() => {
@@ -28,7 +30,10 @@ export default function JavaSidebar() {
           <span>💻</span>
           <span>Code Editor</span>
         </Link>
-        {Object.entries(javaCourses).map(([key, chapter]) => (
+        {Object.entries(javaCourses).map(([key, chapter]) => {
+          const total = chapter.subtopics.length;
+          const completed = chapter.subtopics.filter(s => isDone(`java-${key}-${s.id}`)).length;
+          return (
           <div key={key}>
             <button
               className={`sidebar-topic ${chapterId === key ? 'active' : ''}`}
@@ -39,25 +44,34 @@ export default function JavaSidebar() {
             >
               <span className="topic-icon">{chapter.icon}</span>
               <span>{chapter.title}</span>
+              {completed === total ? (
+                <span className="topic-done-badge">✓</span>
+              ) : completed > 0 ? (
+                <span className="topic-progress-txt">{completed}/{total}</span>
+              ) : null}
               <span className="chevron">{expanded[key] ? '▾' : '▶'}</span>
             </button>
             {expanded[key] && chapterId === key && (
               <ul className="subtopic-list">
-                {chapter.subtopics.map(sub => (
+                {chapter.subtopics.map(sub => {
+                  const subDone = isDone(`java-${key}-${sub.id}`);
+                  return (
                   <li key={sub.id}>
                     <Link
                       to={`/java/${key}/${sub.id}`}
                       className={`subtopic-link ${parseInt(lessonId) === sub.id ? 'active' : ''}`}
                     >
-                      <span className="sub-num">{sub.id}</span>
+                      <span className={`sub-num${subDone ? ' sub-done' : ''}`}>{subDone ? '✓' : sub.id}</span>
                       {sub.title}
                     </Link>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             )}
           </div>
-        ))}
+          );
+        })}
       </nav>
     </aside>
   );

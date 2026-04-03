@@ -9,6 +9,7 @@ import PracticeEditor from './pages/PracticeEditor';
 import JavaHome from './pages/JavaHome';
 import JavaTopicPage from './pages/JavaTopicPage';
 import JavaCodeEditor from './pages/JavaCodeEditor';
+import { ProgressProvider } from './context/ProgressContext';
 import './App.css';
 
 function AppContent() {
@@ -72,7 +73,9 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <ProgressProvider>
+        <AppContent />
+      </ProgressProvider>
     </BrowserRouter>
   );
 }

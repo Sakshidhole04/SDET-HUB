@@ -1720,3 +1720,176 @@ a { color: inherit; text-decoration: none; }
   .jce-run-btn { padding: 8px 20px; font-size: 14px; }
 }
 
+/* ===== CODE BLOCK WITH COPY BUTTON ===== */
+.cb-wrapper {
+  margin: 14px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0d1117;
+}
+
+.cb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.cb-lang {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent-light);
+}
+
+.cb-copy {
+  padding: 3px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cb-copy:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(99,102,241,0.1); }
+.cb-copy.copied { border-color: #22c55e; color: #4ade80; background: rgba(34,197,94,0.1); }
+
+.cb-pre {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  background: #0d1117;
+}
+
+.cb-pre code {
+  background: none !important;
+  padding: 0 !important;
+  color: #79c0ff;
+  font-family: 'Cascadia Code', 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+/* ===== READ TIME + BREADCRUMB EXTRAS ===== */
+.read-time {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.breadcrumb-done {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4ade80;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 12px;
+  padding: 1px 8px;
+  margin-left: 4px;
+}
+
+/* ===== MARK AS COMPLETE BUTTON ===== */
+.lesson-footer {
+  margin: 16px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mark-done-btn {
+  padding: 8px 22px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mark-done-btn:hover {
+  border-color: #22c55e;
+  color: #4ade80;
+  background: rgba(34,197,94,0.08);
+}
+.mark-done-btn.done {
+  border-color: #22c55e;
+  color: #4ade80;
+  background: rgba(34,197,94,0.12);
+}
+
+/* ===== SCROLL TO TOP BUTTON ===== */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.5);
+  z-index: 300;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scroll-top-btn:hover { background: #4f52d4; transform: translateY(-2px); }
+
+/* ===== SIDEBAR PROGRESS INDICATORS ===== */
+.topic-done-badge {
+  margin-left: auto;
+  margin-right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(34,197,94,0.2);
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(34,197,94,0.4);
+}
+
+.topic-progress-txt {
+  margin-left: auto;
+  margin-right: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-light);
+  background: rgba(99,102,241,0.12);
+  border-radius: 10px;
+  padding: 1px 7px;
+  flex-shrink: 0;
+}
+
+.sub-num.sub-done {
+  background: #22c55e !important;
+  color: #fff !important;
+  font-size: 9px !important;
+}
+
+/* Mobile adjustments for new elements */
+@media (max-width: 768px) {
+  .scroll-top-btn { bottom: 18px; right: 14px; width: 38px; height: 38px; font-size: 16px; }
+  .mark-done-btn { font-size: 13px; padding: 7px 18px; }
+  .cb-pre { padding: 12px 12px; }
+  .cb-pre code { font-size: 12px; }
+}
+

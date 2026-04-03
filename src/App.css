@@ -42,10 +42,6 @@
   flex-wrap: wrap;
 }
 
-.landing-cards .landing-card {
-  min-height: 420px;
-}
-
 .landing-card {
   background: #fff;
   border-radius: 16px;
@@ -81,13 +77,9 @@
 .landing-card-sub {
   font-size: 14px;
   color: #6b7280;
-  margin-bottom: 0;
+  margin-bottom: 28px;
   line-height: 1.5;
   flex: 1;
-}
-
-.landing-card .landing-btn {
-  margin-top: 28px;
 }
 
 .landing-btn {

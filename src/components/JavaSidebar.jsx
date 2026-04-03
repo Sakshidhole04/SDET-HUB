@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { javaCourses } from '../data/javaData';
 
 export default function JavaSidebar() {
   const { chapterId, lessonId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isEditor = location.pathname === '/java/editor';
   const [expanded, setExpanded] = useState(() => chapterId ? { [chapterId]: true } : {});
 
   useEffect(() => {
@@ -19,6 +21,13 @@ export default function JavaSidebar() {
         <span className="sidebar-title">☕ Java</span>
       </div>
       <nav>
+        <Link
+          to="/java/editor"
+          className={`sidebar-editor-link${isEditor ? ' active' : ''}`}
+        >
+          <span>💻</span>
+          <span>Code Editor</span>
+        </Link>
         {Object.entries(javaCourses).map(([key, chapter]) => (
           <div key={key}>
             <button

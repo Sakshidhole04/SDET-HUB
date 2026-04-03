@@ -8,6 +8,7 @@ import TopicPage from './pages/TopicPage';
 import PracticeEditor from './pages/PracticeEditor';
 import JavaHome from './pages/JavaHome';
 import JavaTopicPage from './pages/JavaTopicPage';
+import JavaCodeEditor from './pages/JavaCodeEditor';
 import './App.css';
 
 function AppContent() {
@@ -57,6 +58,10 @@ function AppContent() {
           <Route
             path="/java/:chapterId/:lessonId"
             element={<><JavaSidebar /><main className="main-content"><JavaTopicPage /></main></>}
+          />
+          <Route
+            path="/java/editor"
+            element={<><JavaSidebar /><main className="main-content jce-main"><JavaCodeEditor /></main></>}
           />
         </Routes>
       </div>

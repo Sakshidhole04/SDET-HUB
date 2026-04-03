@@ -1997,12 +1997,94 @@ Design pattern where each web page = one class. Locators and methods are in the 
 
 ### 7. How do you run tests in parallel?
 - TestNG: Configure \`parallel="tests"\` in testng.xml
-- Maven Surefire: \`forkCount=2\` 
+- Maven Surefire: \`forkCount=2\`
 - Selenium Grid: Hub + nodes
 - Cloud: BrowserStack, Sauce Labs
 
 ### 8. What is Selenium Grid?
-Allows running tests on multiple machines and browsers simultaneously using Hub (manages) and Node (executes) architecture.`,
+Allows running tests on multiple machines and browsers simultaneously using Hub (manages) and Node (executes) architecture.
+
+### 9. What is the difference between CSS Selector and XPath?
+| CSS Selector | XPath |
+|---|---|
+| Faster in most browsers | Slower but more powerful |
+| Cannot traverse up DOM | Can traverse parent/ancestors |
+| Syntax: \`#id .class\` | Syntax: \`//tag[@attr='val']\` |
+| Cannot use text() | Can use \`text()\` and \`contains()\` |
+
+### 10. What are different types of locators in Selenium? Which is most preferred?
+8 locators: ID, Name, ClassName, TagName, LinkText, PartialLinkText, CSS Selector, XPath.
+**Priority**: ID > Name > CSS Selector > XPath. ID is fastest and most stable.
+
+### 11. How do you handle iFrames in Selenium?
+\`\`\`java
+driver.switchTo().frame("frameName");     // by name/id
+driver.switchTo().frame(0);               // by index
+driver.switchTo().frame(iframeElement);   // by WebElement
+driver.switchTo().defaultContent();       // back to main page
+\`\`\`
+
+### 12. How do you handle browser alerts?
+\`\`\`java
+Alert alert = driver.switchTo().alert();
+alert.getText();     // get message
+alert.accept();      // click OK
+alert.dismiss();     // click Cancel
+alert.sendKeys("x"); // type in prompt
+\`\`\`
+
+### 13. What is Actions class? When do you use it?
+Used for complex mouse and keyboard interactions not possible with simple click/sendKeys:
+- Hover: \`actions.moveToElement(el).perform()\`
+- Right-click: \`actions.contextClick(el).perform()\`
+- Drag & drop: \`actions.dragAndDrop(src, tgt).perform()\`
+- Key combo: \`actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).perform()\`
+
+### 14. What is JavaScriptExecutor? When is it used?
+Interface to execute JavaScript in the browser context. Used when:
+- Regular click fails (hidden/overlapping elements)
+- Scroll to element: \`js.executeScript("arguments[0].scrollIntoView(true);", el)\`
+- Set value directly: \`js.executeScript("arguments[0].value='text';", el)\`
+
+### 15. How do you take a screenshot in Selenium?
+\`\`\`java
+TakesScreenshot ts = (TakesScreenshot) driver;
+File src = ts.getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(src, new File("screenshot.png"));
+\`\`\`
+
+### 16. What is WebDriverManager and why is it used?
+Library that automatically downloads the correct browser driver binary (ChromeDriver, GeckoDriver) matching the installed browser version. Eliminates manual driver management.
+\`\`\`java
+WebDriverManager.chromedriver().setup();
+\`\`\`
+
+### 17. How do you handle dropdowns in Selenium?
+\`\`\`java
+Select select = new Select(driver.findElement(By.id("dropdown")));
+select.selectByVisibleText("India");
+select.selectByValue("IN");
+select.selectByIndex(2);
+\`\`\`
+For non-\`<select>\` custom dropdowns: click to open, then click option using locator.
+
+### 18. What is the difference between absolute and relative XPath?
+- **Absolute**: Starts from root \`/html/body/div/input\` — fragile, breaks on any UI change
+- **Relative**: Starts anywhere \`//input[@id='user']\` — recommended, robust
+
+### 19. How do you verify a checkbox is checked?
+\`\`\`java
+boolean isChecked = driver.findElement(By.id("agree")).isSelected();
+\`\`\`
+
+### 20. What is Page Factory in Selenium?
+Optimization of POM using \`@FindBy\` annotations and lazy element initialization:
+\`\`\`java
+@FindBy(id = "username") WebElement username;
+// In constructor:
+PageFactory.initElements(driver, this);
+\`\`\`
+Elements are initialized when first used, not when constructor runs.`,
         exercises: [],
       },
       {
@@ -2047,7 +2129,76 @@ Safe to call multiple times with same result:
 Testing that API matches agreed contract (schema) between consumer and provider. Tools: Pact, Spring Cloud Contract.
 
 ### 8. What is CORS?
-Cross-Origin Resource Sharing — HTTP mechanism allowing browsers to make requests to different domains. APIs must include appropriate CORS headers.`,
+Cross-Origin Resource Sharing — HTTP mechanism allowing browsers to make requests to different domains. APIs must include appropriate CORS headers.
+
+### 9. What is the difference between SOAP and REST?
+| SOAP | REST |
+|------|------|
+| Protocol | Architectural style |
+| XML only | JSON, XML, text |
+| Strict standards (WSDL) | Flexible |
+| Stateful or stateless | Stateless |
+| WS-Security | HTTPS, OAuth |
+| Slower | Faster |
+
+### 10. What HTTP status codes should every tester know?
+- **200** OK · **201** Created · **204** No Content · **206** Partial Content
+- **301** Moved Permanently · **304** Not Modified
+- **400** Bad Request · **401** Unauthorized · **403** Forbidden · **404** Not Found · **409** Conflict · **422** Unprocessable Entity
+- **500** Internal Server Error · **502** Bad Gateway · **503** Service Unavailable · **504** Gateway Timeout
+
+### 11. What is REST Assured? How does Given/When/Then work?
+Java library for API testing. BDD-style syntax:
+- **given()**: Request setup (headers, body, auth, params)
+- **when()**: HTTP action (get, post, put, delete)
+- **then()**: Assertions (statusCode, body values)
+
+### 12. What is JSON Schema validation?
+Validates the **structure and types** of JSON response — not just values. Catches contract-breaking changes.
+\`\`\`java
+.body(matchesJsonSchemaInClasspath("user-schema.json"))
+\`\`\`
+
+### 13. How do you test API security?
+- Test without auth token → expect 401
+- Test with expired token → expect 401
+- Test with insufficient permissions → expect 403
+- Test SQL injection in query params
+- Test for sensitive data in response (passwords, tokens)
+
+### 14. What is the difference between query param and path param?
+- **Path param**: Part of URL path — \`/users/{id}\` → \`/users/5\`
+- **Query param**: After \`?\` — \`/users?page=2&size=10\`
+
+### 15. What is API mocking? When do you use it?
+Creating a fake API that returns predefined responses. Use when:
+- Real API is not ready yet
+- Testing error scenarios (500, timeout)
+- Avoiding costs of hitting real 3rd party APIs
+- Tools: WireMock, MockServer, Postman Mock Server
+
+### 16. How do you chain API calls in a test?
+Extract response value from one call and pass to next:
+\`\`\`java
+String userId = given().post("/users").then().extract().path("id");
+given().get("/users/" + userId).then().statusCode(200);
+\`\`\`
+
+### 17. What is the difference between integration testing and API testing?
+- **API testing**: Tests the API contract — inputs, outputs, status codes
+- **Integration testing**: Tests how multiple components work together including APIs, DB, services
+
+### 18. How do you assert response time in REST Assured?
+\`\`\`java
+given().get("/users").then().time(lessThan(2000L), TimeUnit.MILLISECONDS);
+\`\`\`
+
+### 19. What is Bearer Token authentication?
+Token-based auth. Client sends \`Authorization: Bearer <token>\` header. Server validates the JWT token without storing session.
+
+### 20. What is the difference between functional and non-functional API testing?
+- **Functional**: Does it return correct data? Correct status codes? Business logic correct?
+- **Non-functional**: Performance (response time), load (concurrent users), security (auth, injection)`,
         exercises: [],
       },
       {
@@ -2093,7 +2244,89 @@ Records full test execution including screenshots, network requests, and DOM sna
 Use \`request\` fixture to make HTTP calls without browser. Useful for test data setup or pure API tests.
 
 ### 8. What are soft assertions?
-\`expect.soft()\` — test continues even if assertion fails. Collects all failures and reports at end.`,
+\`expect.soft()\` — test continues even if assertion fails. Collects all failures and reports at end.
+
+### 9. What is the recommended locator strategy in Playwright?
+Priority order:
+1. \`getByRole()\` — most accessible, matches user perception
+2. \`getByLabel()\` — for form inputs
+3. \`getByText()\` — visible text
+4. \`getByTestId()\` — data-testid attribute
+5. \`locator()\` with CSS/XPath — last resort
+
+### 10. What is the difference between page.click() and locator.click()?
+- \`page.click(selector)\` — shorthand, deprecated in newer versions
+- \`locator.click()\` — preferred, supports chaining, filtering and auto-retry
+
+### 11. How do you intercept network requests in Playwright?
+\`\`\`javascript
+await page.route('**/api/users', route => {
+  route.fulfill({ status: 200, body: JSON.stringify([{id:1}]) });
+});
+\`\`\`
+
+### 12. What is the difference between Browser, BrowserContext, and Page?
+- **Browser**: The browser process (Chrome/Firefox/WebKit)
+- **BrowserContext**: Isolated session — like incognito window. Separate cookies/storage per context
+- **Page**: Single tab inside a context
+
+### 13. How do you run Playwright tests in headed vs headless mode?
+\`\`\`javascript
+// playwright.config.ts
+use: { headless: false }  // headed
+use: { headless: true }   // headless (default in CI)
+// CLI:
+npx playwright test --headed
+\`\`\`
+
+### 14. How do you configure parallel execution in Playwright?
+\`\`\`typescript
+export default defineConfig({
+  fullyParallel: true,          // all tests run in parallel
+  workers: process.env.CI ? 2 : 4,  // threads
+});
+\`\`\`
+
+### 15. What is visual regression testing in Playwright?
+\`\`\`javascript
+await expect(page).toHaveScreenshot('homepage.png');
+\`\`\`
+Compares current screenshot with stored baseline. Fails if pixels differ beyond threshold.
+
+### 16. How do you retry a failing test in Playwright?
+\`\`\`typescript
+// Config level
+retries: 2
+// Test level
+test('flaky test', { retries: 3 }, async ({ page }) => { ... });
+\`\`\`
+
+### 17. What is \`waitForLoadState\` and when do you use it?
+Waits for a specific network/load condition:
+- \`'load'\` — window.onload fired
+- \`'domcontentloaded'\` — HTML fully parsed
+- \`'networkidle'\` — no network requests for 500ms (useful after SPAs render)
+
+### 18. How do you handle file downloads in Playwright?
+\`\`\`javascript
+const [download] = await Promise.all([
+  page.waitForEvent('download'),
+  page.click('#download-btn')
+]);
+await download.saveAs('./files/report.pdf');
+\`\`\`
+
+### 19. What is the use of \`test.describe\` and \`test.describe.configure\`?
+- \`test.describe\` — group related tests together with shared hooks
+- \`test.describe.configure({ mode: 'serial' })\` — run tests in that group sequentially (useful for dependent tests)
+
+### 20. How do you emulate mobile devices in Playwright?
+\`\`\`typescript
+import { devices } from '@playwright/test';
+test.use({ ...devices['iPhone 13'] });
+// Or in config:
+projects: [{ name: 'mobile', use: { ...devices['Pixel 5'] } }]
+\`\`\``,
         exercises: [],
       },
       {
@@ -2136,7 +2369,73 @@ Fix: explicit waits, test isolation, retry mechanism, mock dynamic data.
 - **BDD**: Define behavior in plain language (Given/When/Then) → write automation → code
 
 ### 8. What is exploratory testing?
-Simultaneous test design and execution. Tester explores app without predefined test cases, relying on knowledge and intuition. Cannot be automated.`,
+Simultaneous test design and execution. Tester explores app without predefined test cases, relying on knowledge and intuition. Cannot be automated.
+
+### 9. What is regression testing vs smoke testing vs sanity testing?
+- **Regression**: Re-run all tests after a change to ensure nothing broke
+- **Smoke**: Quick basic tests to verify the build is stable enough for further testing
+- **Sanity**: Narrow focused tests after a bug fix to verify the specific fix works
+
+### 10. What is the difference between black box, white box, and grey box testing?
+- **Black box**: Tester has no knowledge of internal code; tests input/output only
+- **White box**: Tester knows internal code; tests code paths, coverage
+- **Grey box**: Partial knowledge; combination of both approaches
+
+### 11. What test types should be automated? What should not?
+**Automate**: Regression tests, smoke tests, repetitive data-driven tests, API tests  
+**Don't automate**: One-time tests, exploratory testing, UI tests that change often, subjective tests (UX)
+
+### 12. What is a test framework? Name some.
+A structure for organizing, running, and reporting tests.
+- **Java**: TestNG, JUnit, Cucumber
+- **JavaScript**: Playwright, Cypress, Jest
+- **Python**: pytest, Robot Framework
+
+### 13. What is the difference between verification and validation?
+- **Verification**: Are we building the product right? (reviews, walkthroughs — static)
+- **Validation**: Are we building the right product? (testing with actual software — dynamic)
+
+### 14. What is defect life cycle?
+New → Assigned → Open → Fixed → Retest → Verified → Closed  
+If not fixed: Reopen → Assigned → Open → Fixed...
+
+### 15. What is severity vs priority?
+- **Severity**: Impact of defect on system (Critical/High/Medium/Low)
+- **Priority**: How urgently it should be fixed (business decision)
+- Example: Typo on login button = Low severity, High priority (visible to all users)
+
+### 16. What is data-driven testing?
+Running the same test with multiple sets of input data. Data stored externally (Excel, CSV, JSON).
+\`\`\`java
+@DataProvider
+public Object[][] loginData() {
+  return new Object[][]{{"admin","pass"},{"user","pass"}};
+}
+\`\`\`
+
+### 17. What is keyword-driven testing?
+Test cases written as keywords in a table (Excel/CSV). Framework reads keywords and executes corresponding functions. Allows non-technical testers to write test cases.
+
+### 18. What is the difference between load testing, stress testing, and performance testing?
+- **Performance testing**: Overall response time and throughput under expected load
+- **Load testing**: Behavior under expected maximum load
+- **Stress testing**: Behavior beyond capacity — find breaking point
+
+### 19. What is TestNG? List key annotations.
+Java testing framework. Key annotations:
+- \`@Test\` — mark test method
+- \`@BeforeMethod / @AfterMethod\` — run before/after each test
+- \`@BeforeClass / @AfterClass\` — run before/after class
+- \`@BeforeSuite / @AfterSuite\` — run before/after entire suite
+- \`@DataProvider\` — supply test data
+- \`@Parameters\` — pass testng.xml parameters
+
+### 20. How do you prioritize test cases when time is limited?
+1. Business-critical flows (login, payment, core features)
+2. Tests that cover recent changes
+3. Previously failed tests
+4. High-risk areas
+5. Smoke/sanity tests first, regression later`,
         exercises: [],
       },
       {
@@ -2144,70 +2443,205 @@ Simultaneous test design and execution. Tester explores app without predefined t
         title: "Java / Core Programming for SDET",
         content: `## Java / Core Programming for SDET
 
-### OOP Concepts
+### 1. What are the 4 pillars of OOP?
 \`\`\`java
-// Inheritance
-class Animal { void eat() {} }
-class Dog extends Animal { void bark() {} }
-
-// Polymorphism
-Animal a = new Dog();
-a.eat();
-
-// Encapsulation
+// 1. Encapsulation — hide data using private fields + getters/setters
 private String name;
 public String getName() { return name; }
-public void setName(String n) { name = n; }
 
-// Abstraction
+// 2. Inheritance — child extends parent
+class Dog extends Animal { void bark() {} }
+
+// 3. Polymorphism — one interface, multiple behavior
+Animal a = new Dog(); a.eat(); // calls Dog's eat()
+
+// 4. Abstraction — hide implementation
 abstract class Shape { abstract double area(); }
 \`\`\`
 
-### Collections
-\`\`\`java
-List<String> list = new ArrayList<>();
-list.add("a"); list.get(0); list.size();
+### 2. What is the difference between interface and abstract class?
+| Interface | Abstract Class |
+|-----------|---------------|
+| Only abstract methods (Java 7); can have default (Java 8+) | Can have concrete + abstract methods |
+| No constructors | Has constructors |
+| Multiple interfaces allowed | Single inheritance only |
+| All fields are public static final | Can have any access modifiers |
+| Use for "can-do" behavior | Use for "is-a" relationship |
 
+### 3. Collections — ArrayList vs LinkedList vs HashMap
+\`\`\`java
+// ArrayList — fast random access O(1), slow insert/delete O(n)
+List<String> list = new ArrayList<>();
+
+// LinkedList — fast insert/delete O(1), slow random access O(n)
+List<String> linked = new LinkedList<>();
+
+// HashMap — key-value pairs, O(1) get/put average
 Map<String, Integer> map = new HashMap<>();
 map.put("a", 1); map.get("a"); map.containsKey("a");
 
+// HashSet — no duplicates, O(1) lookup
 Set<String> set = new HashSet<>();
-set.add("x"); set.contains("x");
 \`\`\`
 
-### String Methods
+### 4. What is the difference between == and .equals()?
+- \`==\` compares **reference** (memory address)
+- \`.equals()\` compares **value** (content)
 \`\`\`java
-String s = "Hello World";
-s.length();             // 11
-s.substring(0, 5);      // "Hello"
-s.toLowerCase();        // "hello world"
-s.contains("World");    // true
-s.replace("World","QA");// "Hello QA"
-s.split(" ");           // ["Hello","World"]
-s.trim();               // removes spaces
-s.equals("other");      // compare value
+String a = new String("hello");
+String b = new String("hello");
+a == b        // false (different objects)
+a.equals(b)  // true (same content)
 \`\`\`
 
-### Exception Handling
+### 5. Checked vs Unchecked Exceptions
+- **Checked**: Must be declared or caught at compile time. E.g. \`IOException\`, \`SQLException\`
+- **Unchecked**: Runtime exceptions. E.g. \`NullPointerException\`, \`ArrayIndexOutOfBoundsException\`, \`NoSuchElementException\`
 \`\`\`java
 try {
-  WebElement el = driver.findElement(By.id("x"));
+  driver.findElement(By.id("x")).click();
 } catch (NoSuchElementException e) {
-  System.out.println("Element not found: " + e.getMessage());
+  System.out.println("Element not found");
 } finally {
-  // always runs
+  driver.quit(); // always runs
 }
 \`\`\`
 
-### Key SDET Interview Java Topics
-✅ ArrayList vs LinkedList vs HashMap  
-✅ interface vs abstract class  
-✅ checked vs unchecked exceptions  
-✅ static keyword, constructors  
-✅ String, StringBuilder performance difference`,
+### 6. What is the static keyword in Java?
+- **Static variable**: Shared across all instances of class
+- **Static method**: Can be called without creating object
+- **Static block**: Executed once when class loads
+\`\`\`java
+public class Config {
+  public static final String BASE_URL = "https://app.com";
+  public static WebDriver driver;
+  static { System.out.println("Class loaded"); }
+}
+\`\`\`
+
+### 7. String vs StringBuilder vs StringBuffer
+| | String | StringBuilder | StringBuffer |
+|-|--------|--------------|-------------|
+| Mutable | No (immutable) | Yes | Yes |
+| Thread-safe | N/A | No | Yes |
+| Performance | Slow (creates new obj) | Fast | Slightly slower |
+\`\`\`java
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World").reverse(); // fast string building
+\`\`\`
+
+### 8. What are commonly used String methods?
+\`\`\`java
+String s = "Hello World";
+s.length()              // 11
+s.substring(0, 5)       // "Hello"
+s.toLowerCase()         // "hello world"
+s.toUpperCase()         // "HELLO WORLD"
+s.trim()                // remove leading/trailing spaces
+s.contains("World")     // true
+s.startsWith("Hello")   // true
+s.endsWith("World")     // true
+s.replace("World","QA") // "Hello QA"
+s.split(" ")            // ["Hello","World"]
+s.charAt(0)             // 'H'
+s.indexOf("o")          // 4
+s.isEmpty()             // false
+s.equals("other")       // false (case-sensitive)
+s.equalsIgnoreCase("hello world") // true
+\`\`\`
+
+### 9. What is method overloading vs method overriding?
+- **Overloading**: Same method name, different parameters — compile-time polymorphism
+\`\`\`java
+void click() {}
+void click(int x, int y) {}
+\`\`\`
+- **Overriding**: Child class redefines parent method — runtime polymorphism
+\`\`\`java
+class Animal { void sound() { System.out.println("..."); } }
+class Dog extends Animal { @Override void sound() { System.out.println("Woof"); } }
+\`\`\`
+
+### 10. What is a constructor? Types?
+Special method called when object is created. No return type.
+- **Default constructor**: No-arg, provided by Java if none defined
+- **Parameterized constructor**: Accepts arguments
+\`\`\`java
+public LoginPage(WebDriver driver) {
+  this.driver = driver;
+  PageFactory.initElements(driver, this);
+}
+\`\`\`
+
+### 11. How does forEach and lambda work in Java 8+?
+\`\`\`java
+List<String> names = Arrays.asList("Alice","Bob","Carol");
+
+// Lambda
+names.forEach(name -> System.out.println(name));
+
+// Method reference
+names.forEach(System.out::println);
+
+// Stream filter
+names.stream()
+  .filter(n -> n.startsWith("A"))
+  .forEach(System.out::println);
+\`\`\`
+
+### 12. Common SDET coding questions
+\`\`\`java
+// Reverse a string
+String rev = new StringBuilder("Hello").reverse().toString(); // "olleH"
+
+// Count occurrences of char
+String s = "automation";
+long count = s.chars().filter(c -> c == 'a').count(); // 3
+
+// Find duplicates in array
+int[] arr = {1,2,3,2,4,3};
+Set<Integer> seen = new HashSet<>();
+for (int n : arr) if (!seen.add(n)) System.out.println("Duplicate: " + n);
+
+// Check palindrome
+String word = "racecar";
+boolean isPalin = word.equals(new StringBuilder(word).reverse().toString());
+
+// Fibonacci
+int n = 10, a = 0, b = 1;
+while (a < n) { System.out.print(a + " "); int c = a+b; a=b; b=c; }
+\`\`\`
+
+### 13. What is the this keyword in Java?
+Refers to the current class instance. Used to:
+- Differentiate instance variable from parameter with same name
+- Call another constructor: \`this()\`
+- Pass current object as argument
+
+### 14. What is the final keyword?
+- **final variable**: Cannot be reassigned (constant)
+- **final method**: Cannot be overridden
+- **final class**: Cannot be extended
+\`\`\`java
+public static final String URL = "https://app.com"; // constant
+\`\`\`
+
+### 15. ArrayList vs Array?
+| ArrayList | Array |
+|-----------|-------|
+| Dynamic size | Fixed size |
+| Slower (boxing) | Faster |
+| Only objects | Primitives + objects |
+| Has built-in methods | Limited |
+\`\`\`java
+ArrayList<String> list = new ArrayList<>();
+list.add("a"); list.remove("a"); list.size(); list.contains("a");
+\`\`\``,
         exercises: [
           { title: "Reverse a string", description: "Write Java method to reverse a string without using StringBuilder.reverse()." },
           { title: "Find duplicates in array", description: "Given an int array, find and print all duplicate values using HashMap." },
+          { title: "Check if palindrome", description: "Write a method isPalindrome(String s) that returns true if the string reads the same forwards and backwards." },
+          { title: "Count vowels in a string", description: "Write a Java method to count the number of vowels (a,e,i,o,u) in a given string." },
         ],
       },
     ],

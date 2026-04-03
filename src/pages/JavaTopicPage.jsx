@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { javaCourses } from '../data/javaData';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function JavaTopicPage() {
   const { chapterId, lessonId } = useParams();
@@ -29,7 +30,7 @@ export default function JavaTopicPage() {
       </div>
 
       <div className="topic-content markdown-body">
-        <ReactMarkdown>{lesson.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{lesson.content}</ReactMarkdown>
       </div>
 
       {lesson.exercises && lesson.exercises.length > 0 && (

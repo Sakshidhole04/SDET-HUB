@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { topics } from '../data/topics';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function TopicPage() {
   const { topicKey, subtopicId } = useParams();
@@ -29,7 +30,7 @@ export default function TopicPage() {
       </div>
 
       <div className="topic-content markdown-body">
-        <ReactMarkdown>{subtopic.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{subtopic.content}</ReactMarkdown>
       </div>
 
       {subtopic.exercises && subtopic.exercises.length > 0 && (

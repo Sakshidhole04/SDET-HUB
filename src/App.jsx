@@ -15,14 +15,13 @@ export default function App() {
             <span>Medhasphere</span>
           </Link>
           <nav className="header-nav">
-            <Link to="/" className="header-link active">✅ SDET</Link>
-            <Link to="/practice" className="header-link">🧩 Practice</Link>
-            <a href="#" className="header-link">☕ Java Development</a>
+            <Link to="/topic/selenium/1" className="header-link">✏️ SDET</Link>
+            <Link to="/practice" className="header-link">☕ Java Development</Link>
           </nav>
         </header>
         <div className="app-body">
           <Routes>
-            <Route path="/" element={<><Sidebar /><main className="main-content"><Home /></main></>} />
+            <Route path="/" element={<main className="landing-main"><Home /></main>} />
             <Route
               path="/topic/:topicKey/:subtopicId"
               element={<><Sidebar /><main className="main-content"><TopicPage /></main></>}

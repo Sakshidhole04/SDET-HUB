@@ -16,6 +16,88 @@
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+/* ===== LANDING PAGE ===== */
+.landing-main {
+  flex: 1;
+  background: #efefef;
+  min-height: calc(100vh - var(--header-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-page {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.landing-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.landing-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 48px 40px 36px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.landing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 36px rgba(99,102,241,0.18);
+}
+
+.landing-card-icon {
+  font-size: 72px;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+
+.landing-card-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.landing-card-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.landing-btn {
+  width: 100%;
+  padding: 13px 0;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: 0.2px;
+}
+
+.landing-btn:hover { background: #4f52d4; }
+.landing-btn:active { transform: scale(0.98); }
+
 body { background: var(--bg); color: var(--text); }
 
 a { color: inherit; text-decoration: none; }

@@ -14,7 +14,7 @@ import CourseSidebar from './components/CourseSidebar';
 import CourseTopicPage from './pages/CourseTopicPage';
 import CourseHome from './pages/CourseHome';
 import PythonHome from './pages/PythonHome';
-import SQLHome from './pages/SQLHome';
+import SQLHome from './pages/SqlHome';
 import { pythonCourses } from './data/pythonData';
 import { sqlCourses } from './data/sqlData';
 import './App.css';

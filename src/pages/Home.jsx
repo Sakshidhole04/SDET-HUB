@@ -112,6 +112,7 @@ const TESTIMONIALS = [
 export default function Home() {
   const navigate = useNavigate();
   const typed = useTypewriter();
+  const coursesRef = useRef(null);
 
   return (
     <div className="lp-wrap">
@@ -134,7 +135,7 @@ export default function Home() {
             Structured courses built for SDET &amp; Dev roles. Code in browser. Track progress. Start free.
           </p>
           <div className="lp-hero-btns">
-            <button className="lp-btn-primary" onClick={() => navigate('/sdet')}>Start Learning Free →</button>
+            <button className="lp-btn-primary" onClick={() => coursesRef.current?.scrollIntoView({ behavior: 'smooth' })}>Start Learning Free →</button>
             <button className="lp-btn-ghost"   onClick={() => navigate('/java')}>Explore Java</button>
           </div>
           <div className="lp-stats-row">
@@ -150,7 +151,7 @@ export default function Home() {
       </section>
 
       {/* ── COURSES ── */}
-      <section className="lp-section lp-bg2">
+      <section ref={coursesRef} className="lp-section lp-bg2">
         <div className="lp-sec-label">COURSES</div>
         <h2 className="lp-sec-title">Choose Your Learning Path</h2>
         <p className="lp-sec-sub">Industry-aligned courses with exercises and progress tracking</p>

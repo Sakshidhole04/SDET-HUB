@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TestForge – SDET</title>
+    <script>
+      // GitHub Pages SPA: restore path from query string set by 404.html
+      (function(){
+        var p = window.location.search.match(/[?&]p=([^&]*)/);
+        if (p) {
+          var path = decodeURIComponent(p[1].replace(/~and~/g,'&'));
+          var q = window.location.search.match(/[?&]q=([^&]*)/);
+          window.history.replaceState(null, null,
+            window.location.pathname.slice(0,-1) + path +
+            (q ? '?' + decodeURIComponent(q[1].replace(/~and~/g,'&')) : '') +
+            window.location.hash
+          );
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

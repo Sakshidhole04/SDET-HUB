@@ -83,7 +83,7 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/SDET-HUB">
       <ProgressProvider>
         <AppContent />
       </ProgressProvider>

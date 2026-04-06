@@ -492,7 +492,157 @@ a { color: inherit; text-decoration: none; }
   background: #f5f5f7;
 }
 
-/* ===== SDET HOME PAGE ===== */
+/* ===== SDET HOME PAGE (sh-*) ===== */
+.sh-wrap {
+  background: #080b14;
+  color: #e2e8f0;
+  min-height: 100%;
+}
+
+/* hero */
+.sh-hero {
+  padding: 52px 48px 44px;
+  background: linear-gradient(135deg, #0d1220 0%, #0d1428 60%, #111827 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.sh-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 90% 50%, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sh-hero-badge {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  color: #818cf8; border: 1px solid rgba(129,140,248,0.3);
+  border-radius: 99px; padding: 4px 14px; margin-bottom: 18px;
+  background: rgba(99,102,241,0.08);
+}
+.sh-hero-title {
+  font-size: 34px; font-weight: 800; line-height: 1.18;
+  color: #f1f5f9; letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
+.sh-hero-sub {
+  font-size: 14px; color: #64748b; line-height: 1.7;
+  max-width: 560px; margin-bottom: 24px;
+}
+.sh-hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.sh-pill {
+  font-size: 12px; font-weight: 600; color: #94a3b8;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  padding: 5px 13px; border-radius: 99px;
+}
+
+/* sections */
+.sh-section { padding: 44px 48px; }
+.sh-section--alt { background: #0c101e; }
+.sh-sec-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: #6366f1; margin-bottom: 8px;
+}
+.sh-sec-title {
+  font-size: 22px; font-weight: 800; color: #f1f5f9;
+  letter-spacing: -0.02em; margin-bottom: 24px;
+}
+
+/* chapter cards grid */
+.sh-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.sh-card {
+  background: var(--cb, rgba(99,102,241,0.06));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-top: 3px solid var(--cc, #6366f1);
+  border-radius: 14px; padding: 20px 18px 18px;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.sh-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  border-color: var(--cc, #6366f1);
+}
+.sh-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.sh-card-num { font-size: 11px; font-weight: 700; color: var(--cc, #6366f1); font-family: monospace; opacity: 0.7; }
+.sh-card-tag { font-size: 10px; color: var(--cc, #6366f1); background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 99px; font-weight: 600; }
+.sh-card-icon { font-size: 36px; line-height: 1; margin-bottom: 4px; }
+.sh-card-title { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+.sh-card-meta { display: flex; gap: 10px; font-size: 11px; color: #475569; flex-wrap: wrap; }
+.sh-card-level { font-size: 11px; color: #64748b; margin-top: 2px; }
+.sh-card-arrow {
+  margin-top: 10px; font-size: 12px; font-weight: 700;
+  color: var(--cc, #6366f1); opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.sh-card:hover .sh-card-arrow { opacity: 1; transform: translateX(3px); }
+
+/* skills chips */
+.sh-skills { display: flex; flex-wrap: wrap; gap: 10px; }
+.sh-skill-chip {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  padding: 8px 16px; border-radius: 99px;
+  font-size: 13px; font-weight: 600; color: #94a3b8;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.sh-skill-chip:hover { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: #c7d2fe; }
+
+/* roadmap */
+.sh-roadmap { display: flex; flex-direction: column; gap: 0; max-width: 560px; }
+.sh-rm-step { position: relative; padding-left: 44px; padding-bottom: 28px; }
+.sh-rm-step:last-child { padding-bottom: 0; }
+.sh-rm-dot {
+  position: absolute; left: 0; top: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--rc, #6366f1);
+  box-shadow: 0 0 10px var(--rc, #6366f1);
+}
+.sh-rm-line {
+  position: absolute; left: 7px; top: 20px; bottom: 0;
+  width: 2px; background: rgba(255,255,255,0.06);
+}
+.sh-rm-body { display: flex; align-items: flex-start; gap: 14px; }
+.sh-rm-num { font-size: 11px; font-weight: 700; color: var(--rc, #6366f1); font-family: monospace; flex-shrink: 0; margin-top: 2px; }
+.sh-rm-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 3px; }
+.sh-rm-desc  { font-size: 12px; color: #475569; line-height: 1.5; }
+
+/* career jobs */
+.sh-jobs { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.sh-job-card {
+  background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 18px 16px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.sh-job-card:hover { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.05); }
+.sh-job-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 4px; }
+.sh-job-co    { font-size: 12px; color: #475569; margin-bottom: 8px; }
+.sh-job-sal   { font-size: 13px; font-weight: 700; color: #34d399; }
+
+/* CTA */
+.sh-cta {
+  padding: 48px; text-align: center;
+  background: linear-gradient(135deg, #0d1220, #13103a);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.sh-cta-title { font-size: 22px; font-weight: 800; color: #f1f5f9; margin-bottom: 8px; }
+.sh-cta-sub   { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+.sh-cta-btn {
+  display: inline-block; text-decoration: none;
+  background: #6366f1; color: #fff;
+  padding: 13px 28px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.03em;
+  transition: filter 0.2s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+}
+.sh-cta-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+/* keep old sdet-card for CourseHome (Java/Python/SQL) */
 .sdet-home {
   padding: 50px 40px 40px;
 }

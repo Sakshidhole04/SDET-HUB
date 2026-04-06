@@ -23,6 +23,14 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
+  // Scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // also scroll the main-content panel if it exists
+    const main = document.querySelector('.main-content');
+    if (main) main.scrollTop = 0;
+  }, [location.pathname]);
+
   // Close sidebar whenever the route changes (user navigated)
   useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
 

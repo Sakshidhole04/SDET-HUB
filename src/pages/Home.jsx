@@ -95,12 +95,12 @@ const COURSES = [
 ];
 
 const FEATURES = [
-  { icon: '🎯', title: 'SDET Focused',      desc: 'Every course is designed with Software Testing & Dev Engineering roles in mind.' },
-  { icon: '💻', title: 'Live Code Editor',  desc: 'Write and run Java code right inside the browser. Zero setup.' },
-  { icon: '📈', title: 'Progress Tracking', desc: 'Persistent lesson completion tracking across all courses and sessions.' },
-  { icon: '⚡', title: 'Zero Buffering',    desc: 'No paywall. Every lesson loads instantly with zero wait time.' },
-  { icon: '🧠', title: 'Project-Based',     desc: 'Real-world exercises and coding challenges in every chapter.' },
-  { icon: '🌐', title: 'Always Free',       desc: 'All courses are 100% free. No credit card. No subscription. Ever.' },
+  { icon: '🎯', title: 'SDET Focused',      desc: 'Every course is designed with Software Testing & Dev Engineering roles in mind.',  route: '/sdet' },
+  { icon: '💻', title: 'Live Code Editor',  desc: 'Write and run Java code right inside the browser. Zero setup.',                  route: '/java' },
+  { icon: '📈', title: 'Progress Tracking', desc: 'Persistent lesson completion tracking across all courses and sessions.',          route: '/sdet' },
+  { icon: '⚡', title: 'Zero Buffering',    desc: 'No paywall. Every lesson loads instantly with zero wait time.',                  route: '/python' },
+  { icon: '🧠', title: 'Project-Based',     desc: 'Real-world exercises and coding challenges in every chapter.',                   route: '/java' },
+  { icon: '🌐', title: 'Always Free',       desc: 'All courses are 100% free. No credit card. No subscription. Ever.',              route: '/sql' },
 ];
 
 const TESTIMONIALS = [
@@ -176,10 +176,11 @@ export default function Home() {
         <h2 className="lp-sec-title">Built Different. Built for You.</h2>
         <div className="lp-feat-grid">
           {FEATURES.map(f => (
-            <div key={f.title} className="lp-feat-card">
+            <div key={f.title} className="lp-feat-card lp-feat-card--link" onClick={() => navigate(f.route)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate(f.route)}>
               <div className="lp-feat-icon">{f.icon}</div>
               <h4 className="lp-feat-title">{f.title}</h4>
               <p className="lp-feat-desc">{f.desc}</p>
+              <span className="lp-feat-arrow">Explore →</span>
             </div>
           ))}
         </div>

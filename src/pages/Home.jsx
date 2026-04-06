@@ -27,6 +27,26 @@ export default function Home() {
           </button>
         </div>
 
+        {/* Python Card */}
+        <div className="landing-card" onClick={() => navigate('/python')}>
+          <div className="landing-card-icon">🐍</div>
+          <h2 className="landing-card-title">Python Programming</h2>
+          <p className="landing-card-sub">From Basics to OOP, Modules & Automation</p>
+          <button className="landing-btn" onClick={e => { e.stopPropagation(); navigate('/python'); }}>
+            Start Learning
+          </button>
+        </div>
+
+        {/* SQL Card */}
+        <div className="landing-card" onClick={() => navigate('/sql')}>
+          <div className="landing-card-icon">🗄️</div>
+          <h2 className="landing-card-title">SQL & Databases</h2>
+          <p className="landing-card-sub">Queries, Joins, Subqueries & Database Testing</p>
+          <button className="landing-btn" onClick={e => { e.stopPropagation(); navigate('/sql'); }}>
+            Start Learning
+          </button>
+        </div>
+
       </div>
     </div>
   );

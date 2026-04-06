@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 
-const KEY = 'medhasphere_progress';
+const KEY = 'testforge_progress';
 
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || {}; }

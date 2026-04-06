@@ -130,7 +130,7 @@ final int MAX_SIZE = 100;
 \`\`\`java
 public class VariableTypes {
     // 1. Class/Static variable — shared across all instances
-    static String company = "Medhasphere";
+    static String company = "TestForge";
 
     // 2. Instance variable — belongs to each object
     String name;

@@ -29,7 +29,7 @@ function AppContent() {
       <header className="app-header">
         <Link to="/" className="logo">
           <span className="logo-icon">🎓</span>
-          <span>Medhasphere</span>
+          <span>TestForge</span>
         </Link>
         <button
           className="hamburger"

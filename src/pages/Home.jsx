@@ -146,7 +146,7 @@ const FEATURES = [
     tagline: 'No ads. No spinners. No friction. Just pure, fast learning.',
     visual: 'compare',
     rows: [
-      { label: '🟢 Medhasphere', val: '< 0.1s load', good: true },
+      { label: '🟢 TestForge', val: '< 0.1s load', good: true },
       { label: 'Typical MOOC', val: '3 – 8s + spinner', good: false },
       { label: 'YouTube', val: '2 – 5s + pre-roll ads', good: false },
       { label: 'Paid platforms', val: 'Paywall first', good: false },
@@ -172,7 +172,7 @@ const FEATURES = [
     tagline: 'Premium quality, zero cost. No strings. No upsells. No surprises.',
     visual: 'compare',
     rows: [
-      { label: '🟢 Medhasphere', val: '₹0 forever', good: true },
+      { label: '🟢 TestForge', val: '₹0 forever', good: true },
       { label: 'Udemy', val: '₹499 – ₹3,499 / course', good: false },
       { label: 'Coursera', val: '$49 / month', good: false },
       { label: 'LinkedIn Learning', val: '$19.99 / month', good: false },
@@ -255,7 +255,7 @@ function FeatureSpotlight({ feat, onClose, onNavigate }) {
 }
 
 const TESTIMONIALS = [
-  { stars: 5, quote: '"Medhasphere helped me crack my first SDET role within 2 months. The content is top-notch!"',          name: 'Rajesh Kumar', role: 'SDET at Infosys',     av: '👨‍💼' },
+  { stars: 5, quote: '"TestForge helped me crack my first SDET role within 2 months. The content is top-notch!"',          name: 'Rajesh Kumar', role: 'SDET at Infosys',     av: '👨‍💼' },
   { stars: 5, quote: '"The Java + SQL combination was exactly what my interview needed. Crystal clear explanations."',         name: 'Priya Sharma', role: 'Java Developer',       av: '👩‍💻' },
   { stars: 5, quote: '"Unlike YouTube, every topic is structured here. Feels like a premium course — totally free!"',          name: 'Arjun Patel',  role: 'QA Lead, Capgemini',  av: '👨‍🎓' },
 ];
@@ -325,7 +325,7 @@ export default function Home() {
 
       {/* ── FEATURES ── */}
       <section className="lp-section lp-bg1">
-        <div className="lp-sec-label">WHY MEDHASPHERE</div>
+        <div className="lp-sec-label">WHY TESTFORGE</div>
         <h2 className="lp-sec-title">Built Different. Built for You.</h2>
         <div className="lp-feat-grid">
           {FEATURES.map(f => (
@@ -373,12 +373,12 @@ export default function Home() {
 
       {/* ── FOOTER ── */}
       <footer className="lp-footer">
-        <div className="lp-ftr-logo">📚 <span>Medhasphere</span></div>
+        <div className="lp-ftr-logo">⚒️ <span>TestForge</span></div>
         <p className="lp-ftr-tag">Master Testing &amp; Development Skills</p>
         <div className="lp-ftr-nav">
           {COURSES.map(c => <button key={c.route} onClick={() => navigate(c.route)}>{c.title.split(' ')[0]}</button>)}
         </div>
-        <p className="lp-ftr-copy">© 2025 Medhasphere. All rights reserved.</p>
+        <p className="lp-ftr-copy">© 2026 TestForge. All rights reserved.</p>
       </footer>
 
     </div>

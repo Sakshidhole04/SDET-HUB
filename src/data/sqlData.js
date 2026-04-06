@@ -1056,7 +1056,7 @@ WHERE order_id = 12345;
 
 -- 3. SETUP test data before test
 INSERT INTO users (name, email, role, is_active)
-VALUES ('Test User', 'testuser_${timestamp}@test.com', 'customer', TRUE);
+VALUES ('Test User', 'testuser_\${timestamp}@test.com', 'customer', TRUE);
 
 SET @test_user_id = LAST_INSERT_ID();
 

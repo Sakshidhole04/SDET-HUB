@@ -71,7 +71,17 @@ export default function Home() {
     <div className="home-wrapper">
 
       {/* ── HERO ── */}
-      <section className="home-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+      <section className="home-hero">
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroBg}
+        >
+          <source src="https://videos.pexels.com/video-files/3252966/3252966-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+        </video>
         <div className="home-hero-overlay" />
         <div className="home-hero-content">
           <h1 className="home-hero-title">Welcome to Medhasphere</h1>
@@ -127,7 +137,7 @@ export default function Home() {
       <footer className="home-footer">
         <div className="home-footer-logo">📚 <span>Medhasphere</span></div>
         <p className="home-footer-tagline">Master Testing &amp; Development Skills</p>
-        <p className="home-footer-copy">© 2025 Medhasphere. All rights reserved.</p>
+        <p className="home-footer-copy">© 2026 Medhasphere. All rights reserved.</p>
       </footer>
 
     </div>

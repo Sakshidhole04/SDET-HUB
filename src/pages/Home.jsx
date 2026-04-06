@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import heroBg from '../assets/hero.png';
 
 const courses = [
   {
@@ -72,16 +71,7 @@ export default function Home() {
 
       {/* ── HERO ── */}
       <section className="home-hero">
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={heroBg}
-        >
-          <source src="https://videos.pexels.com/video-files/3252966/3252966-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-        </video>
+        <div className="hero-animated-bg" />
         <div className="home-hero-overlay" />
         <div className="home-hero-content">
           <h1 className="home-hero-title">Welcome to Medhasphere</h1>

@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 /* ── Typewriter ── */
 const TYPED = ['Automation Testing', 'Java Development', 'Python Scripting', 'SQL Mastery', 'SDET Skills'];
 
+const TYPED_ROUTES = ['/sdet', '/java', '/python', '/sql', '/sdet'];
+const TYPED_LABELS = ['Automation Testing', 'Java', 'Python', 'SQL', 'SDET'];
+
 function useTypewriter() {
   const [idx, setIdx]       = useState(0);
   const [charIdx, setChar]  = useState(0);
@@ -24,7 +27,7 @@ function useTypewriter() {
     }
     return () => clearTimeout(t);
   }, [idx, charIdx, del]);
-  return text;
+  return { text, idx };
 }
 
 /* ── Floating code particles (canvas) ── */
@@ -259,7 +262,7 @@ const TESTIMONIALS = [
 
 export default function Home() {
   const navigate = useNavigate();
-  const typed = useTypewriter();
+  const { text: typed, idx: typedIdx } = useTypewriter();
   const coursesRef = useRef(null);
   const [activeFeature, setActiveFeature] = useState(null);
 
@@ -285,7 +288,7 @@ export default function Home() {
           </p>
           <div className="lp-hero-btns">
             <button className="lp-btn-primary" onClick={() => coursesRef.current?.scrollIntoView({ behavior: 'smooth' })}>Start Learning Free →</button>
-            <button className="lp-btn-ghost"   onClick={() => navigate('/java')}>Explore Java</button>
+            <button className="lp-btn-ghost" onClick={() => navigate(TYPED_ROUTES[typedIdx])}>Explore {TYPED_LABELS[typedIdx]}</button>
           </div>
           <div className="lp-stats-row">
             <div className="lp-stat"><strong><Counter to={50000} suffix="+" /></strong><span>Learners</span></div>

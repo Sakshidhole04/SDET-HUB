@@ -95,13 +95,161 @@ const COURSES = [
 ];
 
 const FEATURES = [
-  { icon: '🎯', title: 'SDET Focused',      desc: 'Every course is designed with Software Testing & Dev Engineering roles in mind.',  route: '/sdet' },
-  { icon: '💻', title: 'Live Code Editor',  desc: 'Write and run Java code right inside the browser. Zero setup.',                  route: '/java' },
-  { icon: '📈', title: 'Progress Tracking', desc: 'Persistent lesson completion tracking across all courses and sessions.',          route: '/sdet' },
-  { icon: '⚡', title: 'Zero Buffering',    desc: 'No paywall. Every lesson loads instantly with zero wait time.',                  route: '/python' },
-  { icon: '🧠', title: 'Project-Based',     desc: 'Real-world exercises and coding challenges in every chapter.',                   route: '/java' },
-  { icon: '🌐', title: 'Always Free',       desc: 'All courses are 100% free. No credit card. No subscription. Ever.',              route: '/sql' },
+  {
+    icon: '🎯', title: 'SDET Focused', route: '/sdet', color: '#6366f1',
+    desc: 'Every course is designed with Software Testing & Dev Engineering roles in mind.',
+    tagline: 'Built exclusively for QA & SDET career paths — not watered-down generic content.',
+    visual: 'bars',
+    items: [
+      { label: 'Selenium WebDriver', pct: 95 },
+      { label: 'API Testing (RestAssured)', pct: 90 },
+      { label: 'Playwright Automation', pct: 85 },
+      { label: 'CI/CD & Jenkins', pct: 80 },
+      { label: 'TestNG & JUnit', pct: 92 },
+    ],
+    cta: 'Start SDET Path',
+  },
+  {
+    icon: '💻', title: 'Live Code Editor', route: '/java', color: '#f59e0b',
+    desc: 'Write and run Java code right inside the browser. Zero setup.',
+    tagline: 'Open a lesson, type, hit Run — see output instantly. Nothing to install.',
+    visual: 'code',
+    code: `public class HelloSdet {
+  public static void main(String[] args) {
+    // Your SDET journey starts here
+    System.out.println("Running tests...");
+    assert 1 + 1 == 2 : "Math works!";
+    System.out.println("All tests passed ✓");
+  }
+}`,
+    cta: 'Try the Editor',
+  },
+  {
+    icon: '📈', title: 'Progress Tracking', route: '/sdet', color: '#10b981',
+    desc: 'Persistent lesson completion tracking across all courses and sessions.',
+    tagline: 'Your achievements are saved forever — pick up right where you left off.',
+    visual: 'bars',
+    items: [
+      { label: 'SDET Mastery', pct: 68 },
+      { label: 'Java Development', pct: 45 },
+      { label: 'Python Programming', pct: 80 },
+      { label: 'SQL & Databases', pct: 33 },
+    ],
+    cta: 'View My Progress',
+  },
+  {
+    icon: '⚡', title: 'Zero Buffering', route: '/python', color: '#06b6d4',
+    desc: 'No paywall. Every lesson loads instantly with zero wait time.',
+    tagline: 'No ads. No spinners. No friction. Just pure, fast learning.',
+    visual: 'compare',
+    rows: [
+      { label: '🟢 Medhasphere', val: '< 0.1s load', good: true },
+      { label: 'Typical MOOC', val: '3 – 8s + spinner', good: false },
+      { label: 'YouTube', val: '2 – 5s + pre-roll ads', good: false },
+      { label: 'Paid platforms', val: 'Paywall first', good: false },
+    ],
+    cta: 'Experience It Free',
+  },
+  {
+    icon: '🧠', title: 'Project-Based', route: '/java', color: '#8b5cf6',
+    desc: 'Real-world exercises and coding challenges in every chapter.',
+    tagline: 'Build a portfolio while learning — not after. Employers love this.',
+    visual: 'projects',
+    projects: [
+      { name: 'Selenium Test Suite', tech: 'Java · TestNG · Maven' },
+      { name: 'REST API Tester', tech: 'Java · RestAssured · JSON' },
+      { name: 'Automation Framework', tech: 'Python · Pytest · Selenium' },
+      { name: 'DB Query Validator', tech: 'SQL · JDBC · JUnit' },
+    ],
+    cta: 'Start Building',
+  },
+  {
+    icon: '🌐', title: 'Always Free', route: '/sql', color: '#10b981',
+    desc: 'All courses are 100% free. No credit card. No subscription. Ever.',
+    tagline: 'Premium quality, zero cost. No strings. No upsells. No surprises.',
+    visual: 'compare',
+    rows: [
+      { label: '🟢 Medhasphere', val: '₹0 forever', good: true },
+      { label: 'Udemy', val: '₹499 – ₹3,499 / course', good: false },
+      { label: 'Coursera', val: '$49 / month', good: false },
+      { label: 'LinkedIn Learning', val: '$19.99 / month', good: false },
+    ],
+    cta: 'Start Free Now',
+  },
 ];
+
+/* ── Feature Spotlight Modal ── */
+function FeatureSpotlight({ feat, onClose, onNavigate }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fs-overlay" onClick={onClose}>
+      <div className="fs-panel" style={{ '--fc': feat.color }} onClick={e => e.stopPropagation()}>
+        <button className="fs-close" onClick={onClose} aria-label="Close">✕</button>
+        <div className="fs-icon-wrap">
+          <span className="fs-icon">{feat.icon}</span>
+          <span className="fs-color-ring" />
+        </div>
+        <h2 className="fs-title">{feat.title}</h2>
+        <p className="fs-tagline">{feat.tagline}</p>
+
+        <div className="fs-visual">
+          {feat.visual === 'bars' && feat.items.map((it, i) => (
+            <div key={i} className="fs-bar-row" style={{ animationDelay: (i * 0.07 + 0.1) + 's' }}>
+              <span className="fs-bar-label">{it.label}</span>
+              <div className="fs-bar-track">
+                <div className="fs-bar-fill" style={{ '--w': it.pct + '%', animationDelay: (i * 0.1 + 0.25) + 's' }} />
+              </div>
+              <span className="fs-bar-pct">{it.pct}%</span>
+            </div>
+          ))}
+
+          {feat.visual === 'code' && (
+            <div className="fs-code-wrap">
+              <div className="fs-code-header">
+                <span className="fs-dot" style={{background:'#ff5f56'}} />
+                <span className="fs-dot" style={{background:'#ffbd2e'}} />
+                <span className="fs-dot" style={{background:'#27c93f'}} />
+                <span className="fs-code-filename">HelloSdet.java</span>
+              </div>
+              <pre className="fs-code">{feat.code}</pre>
+            </div>
+          )}
+
+          {feat.visual === 'compare' && feat.rows.map((r, i) => (
+            <div key={i} className={`fs-cmp-row ${r.good ? 'fs-cmp-good' : 'fs-cmp-bad'}`}
+              style={{ animationDelay: (i * 0.08 + 0.1) + 's' }}>
+              <span className="fs-cmp-label">{r.label}</span>
+              <span className="fs-cmp-val">{r.val}</span>
+            </div>
+          ))}
+
+          {feat.visual === 'projects' && feat.projects.map((p, i) => (
+            <div key={i} className="fs-proj-row" style={{ animationDelay: (i * 0.09 + 0.1) + 's' }}>
+              <span className="fs-proj-num">{String(i + 1).padStart(2, '0')}</span>
+              <div className="fs-proj-info">
+                <span className="fs-proj-name">{p.name}</span>
+                <span className="fs-proj-tech">{p.tech}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button className="fs-cta" onClick={() => { onClose(); onNavigate(feat.route); }}>
+          {feat.cta} →
+        </button>
+      </div>
+    </div>
+  );
+}
 
 const TESTIMONIALS = [
   { stars: 5, quote: '"Medhasphere helped me crack my first SDET role within 2 months. The content is top-notch!"',          name: 'Rajesh Kumar', role: 'SDET at Infosys',     av: '👨‍💼' },
@@ -113,6 +261,7 @@ export default function Home() {
   const navigate = useNavigate();
   const typed = useTypewriter();
   const coursesRef = useRef(null);
+  const [activeFeature, setActiveFeature] = useState(null);
 
   return (
     <div className="lp-wrap">
@@ -177,7 +326,7 @@ export default function Home() {
         <h2 className="lp-sec-title">Built Different. Built for You.</h2>
         <div className="lp-feat-grid">
           {FEATURES.map(f => (
-            <div key={f.title} className="lp-feat-card lp-feat-card--link" onClick={() => navigate(f.route)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate(f.route)}>
+            <div key={f.title} className="lp-feat-card lp-feat-card--link" onClick={() => setActiveFeature(f)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && setActiveFeature(f)}>
               <div className="lp-feat-icon">{f.icon}</div>
               <h4 className="lp-feat-title">{f.title}</h4>
               <p className="lp-feat-desc">{f.desc}</p>
@@ -214,6 +363,10 @@ export default function Home() {
         <p className="lp-cta-sub">Join 50,000+ learners building real skills — completely free.</p>
         <button className="lp-btn-primary lp-cta-action" onClick={() => navigate('/sdet')}>Start Your Journey →</button>
       </section>
+
+      {activeFeature && (
+        <FeatureSpotlight feat={activeFeature} onClose={() => setActiveFeature(null)} onNavigate={navigate} />
+      )}
 
       {/* ── FOOTER ── */}
       <footer className="lp-footer">

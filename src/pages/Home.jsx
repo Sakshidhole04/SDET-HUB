@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import heroBg from '../assets/hero.png';
 
 const courses = [
   {
@@ -71,11 +72,16 @@ export default function Home() {
 
       {/* ── HERO ── */}
       <section className="home-hero">
-        <div className="hero-animated-bg" />
+        <div className="hero-img" style={{ backgroundImage: `url(${heroBg})` }} />
         <div className="home-hero-overlay" />
         <div className="home-hero-content">
+          <p className="home-hero-eyebrow">India's #1 Tech Learning Platform</p>
           <h1 className="home-hero-title">Welcome to Medhasphere</h1>
-          <p className="home-hero-sub">Master Testing &amp; Development Skills with Expert Guidance.</p>
+          <p className="home-hero-sub">Master Testing &amp; Development Skills with Expert Guidance</p>
+          <div className="home-hero-btns">
+            <button className="hero-btn-primary" onClick={() => navigate('/sdet')}>Explore Courses →</button>
+            <button className="hero-btn-secondary" onClick={() => navigate('/java')}>Start Java Free</button>
+          </div>
         </div>
       </section>
 

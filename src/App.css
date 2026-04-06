@@ -659,6 +659,25 @@ a { color: inherit; text-decoration: none; }
   min-height: 100%;
 }
 
+/* ---- BACK TO DASHBOARD ---- */
+.back-to-dash {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  color: #64748b;
+  text-decoration: none;
+  margin-bottom: 20px;
+  padding: 5px 12px 5px 8px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 99px;
+  background: rgba(255,255,255,0.03);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.back-to-dash:hover {
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+}
+
 /* ---- HERO ---- */
 .ch-hero {
   padding: 52px 48px 44px;

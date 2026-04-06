@@ -46,6 +46,7 @@ export default function SdetHome() {
 
       {/* ── HERO ── */}
       <div className="sh-hero">
+        <Link to="/" className="back-to-dash">← Back to Dashboard</Link>
         <div className="sh-hero-badge">🧪 SDET MASTERY COURSE</div>
         <h1 className="sh-hero-title">Master Software Development<br />Engineer in Test</h1>
         <p className="sh-hero-sub">

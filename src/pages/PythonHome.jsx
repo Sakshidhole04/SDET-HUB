@@ -61,6 +61,7 @@ export default function PythonHome() {
 
       {/* HERO */}
       <div className="ch-hero">
+        <Link to="/" className="back-to-dash">← Back to Dashboard</Link>
         <div className="ch-hero-bg-symbol">🐍</div>
         <div className="ch-hero-badge">🐍 PYTHON PROGRAMMING COURSE</div>
         <h1 className="ch-hero-title">Master Python — The Language<br/>That Powers Automation &amp; AI</h1>

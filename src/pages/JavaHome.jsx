@@ -58,6 +58,7 @@ export default function JavaHome() {
 
       {/* HERO */}
       <div className="ch-hero">
+        <Link to="/" className="back-to-dash">← Back to Dashboard</Link>
         <div className="ch-hero-bg-symbol">{ '{ }' }</div>
         <div className="ch-hero-badge">☕ JAVA DEVELOPMENT COURSE</div>
         <h1 className="ch-hero-title">Master Java — From Basics<br/>to Enterprise-Grade Code</h1>

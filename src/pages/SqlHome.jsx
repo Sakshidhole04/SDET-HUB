@@ -58,6 +58,7 @@ export default function SQLHome() {
 
       {/* HERO */}
       <div className="ch-hero">
+        <Link to="/" className="back-to-dash">← Back to Dashboard</Link>
         <div className="ch-hero-bg-symbol">SQL</div>
         <div className="ch-hero-badge">🗄️ SQL & DATABASES COURSE</div>
         <h1 className="ch-hero-title">Master SQL — The Language<br/>Every SDET &amp; Developer Needs</h1>

@@ -13,6 +13,8 @@ import { ProgressProvider } from './context/ProgressContext';
 import CourseSidebar from './components/CourseSidebar';
 import CourseTopicPage from './pages/CourseTopicPage';
 import CourseHome from './pages/CourseHome';
+import PythonHome from './pages/PythonHome';
+import SQLHome from './pages/SQLHome';
 import { pythonCourses } from './data/pythonData';
 import { sqlCourses } from './data/sqlData';
 import './App.css';
@@ -71,9 +73,9 @@ function AppContent() {
             path="/java/editor"
             element={<><JavaSidebar /><main className="main-content jce-main"><JavaCodeEditor /></main></>}
           />
-          <Route path="/python" element={<><CourseSidebar courses={pythonCourses} baseRoute="/python" prefix="python" title="🐍 Python" /><main className="main-content"><CourseHome courses={pythonCourses} title="Python Programming" subtitle="Learn Python from basics to advanced — select a chapter to begin" icon="🐍" baseRoute="/python" /></main></>} />
+          <Route path="/python" element={<><CourseSidebar courses={pythonCourses} baseRoute="/python" prefix="python" title="🐍 Python" /><main className="main-content"><PythonHome /></main></>} />
           <Route path="/python/:chapterId/:lessonId" element={<><CourseSidebar courses={pythonCourses} baseRoute="/python" prefix="python" title="🐍 Python" /><main className="main-content"><CourseTopicPage courses={pythonCourses} baseRoute="/python" prefix="python" /></main></>} />
-          <Route path="/sql" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><CourseHome courses={sqlCourses} title="SQL & Databases" subtitle="Master SQL from queries to joins and advanced topics — select a chapter to begin" icon="🗄️" baseRoute="/sql" /></main></>} />
+          <Route path="/sql" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><SQLHome /></main></>} />
           <Route path="/sql/:chapterId/:lessonId" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><CourseTopicPage courses={sqlCourses} baseRoute="/sql" prefix="sql" /></main></>} />
         </Routes>
       </div>

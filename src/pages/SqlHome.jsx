@@ -84,6 +84,42 @@ export default function SQLHome() {
         </div>
       </div>
 
+      {/* WHAT YOU'LL LEARN */}
+      <div className="ch-section ch-section--alt">
+        <div className="ch-sec-label" style={{color:'#0891b2'}}>OVERVIEW</div>
+        <h2 className="ch-sec-title">What You'll Learn</h2>
+        <div className="sh-learn-grid">
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🗄️</span>
+            <div>
+              <div className="sh-lc-title">SQL from First Principles</div>
+              <div className="sh-lc-desc">SELECT, WHERE, GROUP BY, JOINs and subqueries — explained with real table examples.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🔗</span>
+            <div>
+              <div className="sh-lc-title">Joins & Multi-table Queries</div>
+              <div className="sh-lc-desc">Master INNER, LEFT, RIGHT, and FULL joins to query data across multiple related tables.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">📈</span>
+            <div>
+              <div className="sh-lc-title">Window Functions & CTEs</div>
+              <div className="sh-lc-desc">Advanced analytics with RANK, ROW_NUMBER, LAG/LEAD and Common Table Expressions.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🧪</span>
+            <div>
+              <div className="sh-lc-title">SQL for QA & SDET</div>
+              <div className="sh-lc-desc">Learn DB validation queries, data verification and SQL patterns asked in SDET interviews.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* CHAPTERS */}
       <div className="ch-section">
         <div className="ch-sec-label" style={{color:'#06b6d4'}}>CURRICULUM</div>

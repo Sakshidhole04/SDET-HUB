@@ -277,20 +277,6 @@ export default function Home() {
         <div className="lp-orb lp-orb3" />
         <div className="lp-dot-grid" />
 
-        {/* floating course icon cards */}
-        <div className="lp-float-card lp-float-c1" onClick={() => navigate('/sdet')}>
-          <span className="lp-fc-icon">🧪</span><span className="lp-fc-label">SDET</span>
-        </div>
-        <div className="lp-float-card lp-float-c2" onClick={() => navigate('/java')}>
-          <span className="lp-fc-icon">☕</span><span className="lp-fc-label">Java</span>
-        </div>
-        <div className="lp-float-card lp-float-c3" onClick={() => navigate('/python')}>
-          <span className="lp-fc-icon">🐍</span><span className="lp-fc-label">Python</span>
-        </div>
-        <div className="lp-float-card lp-float-c4" onClick={() => navigate('/sql')}>
-          <span className="lp-fc-icon">🗄️</span><span className="lp-fc-label">SQL</span>
-        </div>
-
         <div className="lp-hero-center">
           <span className="lp-pill">🚀 India's #1 Free Tech Learning Platform</span>
           <h1 className="lp-h1">

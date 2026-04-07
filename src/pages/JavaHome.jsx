@@ -85,6 +85,42 @@ export default function JavaHome() {
         </div>
       </div>
 
+      {/* WHAT YOU'LL LEARN */}
+      <div className="ch-section ch-section--alt">
+        <div className="ch-sec-label" style={{color:'#f59e0b'}}>OVERVIEW</div>
+        <h2 className="ch-sec-title">What You'll Learn</h2>
+        <div className="sh-learn-grid">
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">☕</span>
+            <div>
+              <div className="sh-lc-title">Core Java from Scratch</div>
+              <div className="sh-lc-desc">Variables, OOP, collections and exception handling — every concept explained clearly with examples.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">⚡</span>
+            <div>
+              <div className="sh-lc-title">Modern Java (Streams & Lambdas)</div>
+              <div className="sh-lc-desc">Write clean, functional-style Java code using Streams, Optional, and lambda expressions.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🧪</span>
+            <div>
+              <div className="sh-lc-title">Java for SDET</div>
+              <div className="sh-lc-desc">Learn how Java underpins Selenium, TestNG, and RestAssured — crucial for automation interviews.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">💻</span>
+            <div>
+              <div className="sh-lc-title">Live Coding Exercises</div>
+              <div className="sh-lc-desc">Every chapter ends with practice problems you can solve directly in the browser editor.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* CHAPTERS */}
       <div className="ch-section">
         <div className="ch-sec-label" style={{color:'#f59e0b'}}>CURRICULUM</div>

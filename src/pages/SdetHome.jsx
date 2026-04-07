@@ -62,6 +62,42 @@ export default function SdetHome() {
         </div>
       </div>
 
+      {/* ── WHAT YOU'LL LEARN ── */}
+      <div className="sh-section sh-section--alt">
+        <div className="sh-sec-label">OVERVIEW</div>
+        <h2 className="sh-sec-title">What You'll Learn</h2>
+        <div className="sh-learn-grid">
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🎯</span>
+            <div>
+              <div className="sh-lc-title">Industry-Ready Skills</div>
+              <div className="sh-lc-desc">Learn the exact tools and frameworks used in real SDET roles at product companies and MNCs.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">💻</span>
+            <div>
+              <div className="sh-lc-title">Code in Browser</div>
+              <div className="sh-lc-desc">Every module has live coding exercises you can run directly in the browser — no setup required.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">📈</span>
+            <div>
+              <div className="sh-lc-title">Track Your Progress</div>
+              <div className="sh-lc-desc">Mark lessons complete and see your progress across all 5 modules in the sidebar at a glance.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🎤</span>
+            <div>
+              <div className="sh-lc-title">Interview Prep Included</div>
+              <div className="sh-lc-desc">Dedicated module with top interview questions, mock answers, scenario-based Qs and resume tips.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── CHAPTER CARDS ── */}
       <div className="sh-section">
         <div className="sh-sec-label">CURRICULUM</div>

@@ -87,6 +87,42 @@ export default function PythonHome() {
         </div>
       </div>
 
+      {/* WHAT YOU'LL LEARN */}
+      <div className="ch-section ch-section--alt">
+        <div className="ch-sec-label" style={{color:'#10b981'}}>OVERVIEW</div>
+        <h2 className="ch-sec-title">What You'll Learn</h2>
+        <div className="sh-learn-grid">
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🐍</span>
+            <div>
+              <div className="sh-lc-title">Python for Automation</div>
+              <div className="sh-lc-desc">Write automation scripts, web scrapers and test frameworks using Pytest and Selenium.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">🧪</span>
+            <div>
+              <div className="sh-lc-title">Pytest & Test Frameworks</div>
+              <div className="sh-lc-desc">Build real test suites with fixtures, parametrize, and markers — the Pytest way.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">📦</span>
+            <div>
+              <div className="sh-lc-title">OOP + Real Modules</div>
+              <div className="sh-lc-desc">Master classes, inheritance, and use modules like requests, json, csv and os in real code.</div>
+            </div>
+          </div>
+          <div className="sh-learn-card">
+            <span className="sh-lc-icon">💻</span>
+            <div>
+              <div className="sh-lc-title">Code in Browser</div>
+              <div className="sh-lc-desc">Practise every concept immediately — interactive exercises built into each lesson.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* CHAPTERS */}
       <div className="ch-section">
         <div className="ch-sec-label" style={{color:'#10b981'}}>CURRICULUM</div>

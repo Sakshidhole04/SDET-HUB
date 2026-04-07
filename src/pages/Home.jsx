@@ -275,10 +275,26 @@ export default function Home() {
         <div className="lp-orb lp-orb1" />
         <div className="lp-orb lp-orb2" />
         <div className="lp-orb lp-orb3" />
+        <div className="lp-dot-grid" />
+
+        {/* floating course icon cards */}
+        <div className="lp-float-card lp-float-c1" onClick={() => navigate('/sdet')}>
+          <span className="lp-fc-icon">🧪</span><span className="lp-fc-label">SDET</span>
+        </div>
+        <div className="lp-float-card lp-float-c2" onClick={() => navigate('/java')}>
+          <span className="lp-fc-icon">☕</span><span className="lp-fc-label">Java</span>
+        </div>
+        <div className="lp-float-card lp-float-c3" onClick={() => navigate('/python')}>
+          <span className="lp-fc-icon">🐍</span><span className="lp-fc-label">Python</span>
+        </div>
+        <div className="lp-float-card lp-float-c4" onClick={() => navigate('/sql')}>
+          <span className="lp-fc-icon">🗄️</span><span className="lp-fc-label">SQL</span>
+        </div>
+
         <div className="lp-hero-center">
           <span className="lp-pill">🚀 India's #1 Free Tech Learning Platform</span>
           <h1 className="lp-h1">
-            Master{' '}
+            <span className="lp-h1-master">Master</span>{' '}
             <span className="lp-typed">
               {typed}<span className="lp-cursor">|</span>
             </span>
@@ -291,13 +307,13 @@ export default function Home() {
             <button className="lp-btn-ghost" onClick={() => navigate(TYPED_ROUTES[typedIdx])}>Explore {TYPED_LABELS[typedIdx]}</button>
           </div>
           <div className="lp-stats-row">
-            <div className="lp-stat"><strong><Counter to={50000} suffix="+" /></strong><span>Learners</span></div>
+            <div className="lp-stat lp-stat--purple"><strong><Counter to={50000} suffix="+" /></strong><span>Learners</span></div>
             <div className="lp-stat-sep" />
-            <div className="lp-stat"><strong>4</strong><span>Courses</span></div>
+            <div className="lp-stat lp-stat--orange"><strong>4</strong><span>Courses</span></div>
             <div className="lp-stat-sep" />
-            <div className="lp-stat"><strong><Counter to={500} suffix="+" /></strong><span>Lessons</span></div>
+            <div className="lp-stat lp-stat--green"><strong><Counter to={500} suffix="+" /></strong><span>Lessons</span></div>
             <div className="lp-stat-sep" />
-            <div className="lp-stat"><strong>4.9 ⭐</strong><span>Rating</span></div>
+            <div className="lp-stat lp-stat--sky"><strong>4.9 ⭐</strong><span>Rating</span></div>
           </div>
         </div>
       </section>

@@ -37,7 +37,7 @@ function UserMenu() {
   const initials = user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
   return (
-    <div className="user-menu" onBlur={() => setTimeout(() => setOpen(false), 150)}>
+    <div className="user-menu" onBlur={() => setTimeout(() => setOpen(false), 200)}>
       <button className="user-avatar" onClick={() => setOpen(o => !o)} title={user.name}>
         {initials}
       </button>
@@ -46,7 +46,10 @@ function UserMenu() {
           <div className="user-dropdown-name">{user.name}</div>
           <div className="user-dropdown-email">{user.email}</div>
           <hr className="user-dropdown-sep" />
-          <button className="user-dropdown-logout" onClick={() => { logout(); setOpen(false); }}>
+          <button
+            className="user-dropdown-logout"
+            onMouseDown={(e) => { e.preventDefault(); logout(); setOpen(false); }}
+          >
             🚪 Log Out
           </button>
         </div>

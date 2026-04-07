@@ -32,7 +32,7 @@ function useTypewriter() {
 
 /* ── Floating code particles (canvas) ── */
 const SYMS   = ['{ }', '=>', '</>', 'if()', '[ ]', 'SQL', 'fn()', '++', '===', 'def', 'class', 'npm', 'git', 'API', 'for'];
-const PCOLS  = ['#6366f1', '#8b5cf6', '#3b82f6', '#06b6d4', '#10b981'];
+const PCOLS  = ['#c4b5fd', '#6ee7b7', '#7dd3fc', '#fca5a1', '#fde68a'];
 
 function Particles() {
   const ref = useRef(null);
@@ -91,10 +91,10 @@ function Counter({ to, suffix = '' }) {
 
 /* ── Data ── */
 const COURSES = [
-  { route: '/sdet',   icon: '🧪', title: 'SDET Mastery',      desc: 'Selenium, Playwright, API testing & CI/CD pipelines.',             col: '#6366f1', tags: ['Job Ready',    'Hands-on'],         badge: '🔥 Most Popular' },
-  { route: '/java',   icon: '☕', title: 'Java Development',   desc: 'Core Java, Spring Boot & Microservices architecture.',              col: '#f59e0b', tags: ['Enterprise',   'In Demand'],         badge: '⭐ Top Rated'    },
-  { route: '/python', icon: '🐍', title: 'Python Programming', desc: 'OOP, automation, modules and scripting for real-world use.',         col: '#10b981', tags: ['Beginner',     'Versatile'],         badge: '🚀 Trending'     },
-  { route: '/sql',    icon: '🗄️', title: 'SQL & Databases',    desc: 'Queries, joins, subqueries & database testing for SDET roles.',      col: '#06b6d4', tags: ['SDET Essential','Practical'],        badge: '✅ Must Learn'   },
+  { route: '/sdet',   icon: '🧪', title: 'SDET Mastery',      desc: 'Selenium, Playwright, API testing & CI/CD pipelines.',             col: '#a78bfa', tags: ['Job Ready',    'Hands-on'],         badge: '🔥 Most Popular' },
+  { route: '/java',   icon: '☕', title: 'Java Development',   desc: 'Core Java, Spring Boot & Microservices architecture.',              col: '#fca5a1', tags: ['Enterprise',   'In Demand'],         badge: '⭐ Top Rated'    },
+  { route: '/python', icon: '🐍', title: 'Python Programming', desc: 'OOP, automation, modules and scripting for real-world use.',         col: '#6ee7b7', tags: ['Beginner',     'Versatile'],         badge: '🚀 Trending'     },
+  { route: '/sql',    icon: '🗄️', title: 'SQL & Databases',    desc: 'Queries, joins, subqueries & database testing for SDET roles.',      col: '#7dd3fc', tags: ['SDET Essential','Practical'],        badge: '✅ Must Learn'   },
 ];
 
 const FEATURES = [

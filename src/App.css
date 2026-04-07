@@ -253,22 +253,60 @@
 .lp-card-btn:hover { background: linear-gradient(135deg, #7c3aed, #a78bfa); color: #fff; border-color: transparent; }
 
 /* ── FEATURES ── */
-.lp-feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
+.lp-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px; max-width: 1040px; margin: 0 auto;
+}
 .lp-feat-card {
   background: #ffffff;
-  border: 1.5px solid rgba(196,181,253,0.30);
-  border-radius: 18px; padding: 28px 24px;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-  display: flex; flex-direction: column; gap: 0;
-  box-shadow: 0 2px 12px rgba(124,58,237,0.05);
+  border: 1.5px solid rgba(196,181,253,0.25);
+  border-top: 4px solid var(--fc, #a78bfa);
+  border-radius: 20px; padding: 28px 24px 22px;
+  transition: transform 0.22s, box-shadow 0.22s;
+  display: flex; flex-direction: column;
+  box-shadow: 0 3px 16px rgba(124,58,237,0.06);
+  position: relative; overflow: hidden;
+}
+/* subtle tinted bg on hover from --fc */
+.lp-feat-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--fc,#a78bfa) 8%, transparent), transparent 60%);
+  opacity: 0; transition: opacity 0.25s;
+  pointer-events: none;
 }
 .lp-feat-card--link { cursor: pointer; }
-.lp-feat-card--link:hover { border-color: rgba(167,139,250,0.6); transform: translateY(-4px); box-shadow: 0 10px 32px rgba(124,58,237,0.13); }
-.lp-feat-card--link:hover .lp-feat-arrow { color: #7c3aed; opacity: 1; transform: translateX(3px); }
-.lp-feat-icon  { font-size: 30px; margin-bottom: 12px; }
-.lp-feat-title { font-size: 15px; font-weight: 700; color: #2d1f6e; margin-bottom: 8px; }
-.lp-feat-desc  { font-size: 13px; color: #9d8ec0; line-height: 1.6; flex: 1; }
-.lp-feat-arrow { display: inline-block; margin-top: 16px; font-size: 12px; font-weight: 600; color: #a78bfa; opacity: 0.7; transition: color 0.2s, opacity 0.2s, transform 0.2s; letter-spacing: 0.04em; }
+.lp-feat-card--link:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(124,58,237,0.14); }
+.lp-feat-card--link:hover::before { opacity: 1; }
+.lp-feat-card--link:hover .lp-feat-arrow { color: var(--fc, #7c3aed); opacity: 1; transform: translateX(4px); }
+
+/* numbered badge top-right */
+.lp-feat-num {
+  position: absolute; top: 16px; right: 18px;
+  font-size: 11px; font-weight: 800; font-family: monospace;
+  color: var(--fc, #a78bfa); opacity: 0.4;
+  letter-spacing: 0.04em;
+}
+/* icon in a soft colored bubble */
+.lp-feat-icon-wrap {
+  width: 52px; height: 52px; border-radius: 16px;
+  background: color-mix(in srgb, var(--fc, #a78bfa) 14%, white);
+  border: 1.5px solid color-mix(in srgb, var(--fc, #a78bfa) 25%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  transition: transform 0.2s;
+}
+.lp-feat-card--link:hover .lp-feat-icon-wrap { transform: scale(1.08) rotate(-3deg); }
+.lp-feat-icon  { font-size: 26px; line-height: 1; }
+.lp-feat-title { font-size: 15px; font-weight: 800; color: #2d1f6e; margin-bottom: 8px; }
+.lp-feat-desc  { font-size: 13px; color: #7c6fa0; line-height: 1.65; flex: 1; }
+.lp-feat-arrow {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 18px; font-size: 12px; font-weight: 700;
+  color: #c4b5fd; opacity: 0.8;
+  transition: color 0.2s, opacity 0.2s, transform 0.2s;
+  letter-spacing: 0.04em;
+}
 
 /* ══════════════════════════════════════════
    FEATURE SPOTLIGHT MODAL  (fs-*)

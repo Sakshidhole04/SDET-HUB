@@ -343,10 +343,17 @@ export default function Home() {
       <section className="lp-section lp-bg1">
         <div className="lp-sec-label">WHY TESTFORGE</div>
         <h2 className="lp-sec-title">Built Different. Built for You.</h2>
+        <p className="lp-sec-sub">Six reasons learners choose TestForge over every other platform</p>
         <div className="lp-feat-grid">
-          {FEATURES.map(f => (
-            <div key={f.title} className="lp-feat-card lp-feat-card--link" onClick={() => setActiveFeature(f)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && setActiveFeature(f)}>
-              <div className="lp-feat-icon">{f.icon}</div>
+          {FEATURES.map((f, i) => (
+            <div key={f.title} className="lp-feat-card lp-feat-card--link"
+              style={{'--fc': f.color}}
+              onClick={() => setActiveFeature(f)} role="button" tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && setActiveFeature(f)}>
+              <div className="lp-feat-num">{String(i+1).padStart(2,'0')}</div>
+              <div className="lp-feat-icon-wrap">
+                <span className="lp-feat-icon">{f.icon}</span>
+              </div>
               <h4 className="lp-feat-title">{f.title}</h4>
               <p className="lp-feat-desc">{f.desc}</p>
               <span className="lp-feat-arrow">Explore →</span>

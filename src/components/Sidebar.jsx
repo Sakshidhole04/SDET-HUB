@@ -36,13 +36,14 @@ export default function Sidebar() {
               }}
             >
               <span className="topic-icon">{topic.icon}</span>
-              <span>{topic.title}</span>
-              {completed === total ? (
+              <div className="sidebar-topic-body">
+                <span className="sidebar-topic-name">{topic.title}</span>
+                <span className="sidebar-topic-pct">{completed}/{total} lessons</span>
+              </div>
+              {completed === total && total > 0 ? (
                 <span className="topic-done-badge">✓</span>
-              ) : completed > 0 ? (
-                <span className="topic-progress-txt">{completed}/{total}</span>
               ) : null}
-              <span className="chevron">{expanded[key] ? '▾' : '▶'}</span>
+              <span className="chevron">{expanded[key] ? '▾' : '▸'}</span>
             </button>
             {expanded[key] && topicKey === key && (
               <ul className="subtopic-list">
@@ -66,7 +67,7 @@ export default function Sidebar() {
           );
         })}
       </nav>
-      <div style={{ borderTop: '1px solid var(--border)', marginTop: 8 }}>
+      <div style={{ borderTop: '1px solid rgba(196,181,253,0.35)', marginTop: 8 }}>
         <Link
           to="/practice"
           className={`sidebar-practice-link ${isPractice ? 'active' : ''}`}

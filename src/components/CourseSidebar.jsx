@@ -33,13 +33,14 @@ export default function CourseSidebar({ courses, baseRoute, prefix, title }) {
                 }}
               >
                 <span className="topic-icon">{chapter.icon}</span>
-                <span>{chapter.title}</span>
-                {completed === total ? (
+                <div className="sidebar-topic-body">
+                  <span className="sidebar-topic-name">{chapter.title}</span>
+                  <span className="sidebar-topic-pct">{completed}/{total} lessons</span>
+                </div>
+                {completed === total && total > 0 ? (
                   <span className="topic-done-badge">✓</span>
-                ) : completed > 0 ? (
-                  <span className="topic-progress-txt">{completed}/{total}</span>
                 ) : null}
-                <span className="chevron">{expanded[key] ? '▾' : '▶'}</span>
+                <span className="chevron">{expanded[key] ? '▾' : '▸'}</span>
               </button>
               {expanded[key] && chapterId === key && (
                 <ul className="subtopic-list">

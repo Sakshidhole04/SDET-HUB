@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import JavaSidebar from './components/JavaSidebar';
@@ -25,6 +25,17 @@ function UserMenu() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
 
   if (!user) {
     return (
@@ -37,7 +48,7 @@ function UserMenu() {
   const initials = user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
   return (
-    <div className="user-menu" onBlur={() => setTimeout(() => setOpen(false), 200)}>
+    <div className="user-menu" ref={menuRef}>
       <button className="user-avatar" onClick={() => setOpen(o => !o)} title={user.name}>
         {initials}
       </button>
@@ -48,7 +59,7 @@ function UserMenu() {
           <hr className="user-dropdown-sep" />
           <button
             className="user-dropdown-logout"
-            onMouseDown={(e) => { e.preventDefault(); logout(); setOpen(false); }}
+            onClick={() => { logout(); setOpen(false); }}
           >
             🚪 Log Out
           </button>

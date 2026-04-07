@@ -17,6 +17,7 @@ import CourseHome from './pages/CourseHome';
 import PythonHome from './pages/PythonHome';
 import SQLHome from './pages/SqlHome';
 import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
 import { pythonCourses } from './data/pythonData';
 import { sqlCourses } from './data/sqlData';
 import './App.css';
@@ -56,6 +57,16 @@ function UserMenu() {
         <div className="user-dropdown">
           <div className="user-dropdown-name">{user.name}</div>
           <div className="user-dropdown-email">{user.email}</div>
+          <hr className="user-dropdown-sep" />
+          <button className="user-dropdown-item" onClick={() => { navigate('/profile'); setOpen(false); }}>
+            👤 View Profile
+          </button>
+          <button className="user-dropdown-item" onClick={() => { navigate('/profile?tab=progress'); setOpen(false); }}>
+            📊 My Progress
+          </button>
+          <button className="user-dropdown-item" onClick={() => { navigate('/profile?tab=settings'); setOpen(false); }}>
+            ⚙️ Settings
+          </button>
           <hr className="user-dropdown-sep" />
           <button
             className="user-dropdown-logout"
@@ -137,6 +148,7 @@ function AppContent() {
           <Route path="/sql" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><SQLHome /></main></>} />
           <Route path="/sql/:chapterId/:lessonId" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><CourseTopicPage courses={sqlCourses} baseRoute="/sql" prefix="sql" /></main></>} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<main className="landing-main"><ProfilePage /></main>} />
         </Routes>
       </div>
     </div>

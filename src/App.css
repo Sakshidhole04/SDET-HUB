@@ -396,22 +396,33 @@ a { color: inherit; text-decoration: none; }
 
 .logo-icon { font-size: 20px; }
 
-.header-nav { display: flex; gap: 12px; }
+.header-nav { display: flex; gap: 10px; align-items: center; }
 
 .header-link {
-  padding: 5px 14px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 13px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.85);
-  transition: background 0.2s;
-  border: 1px solid rgba(255,255,255,0.25);
+  font-weight: 600;
+  color: #fff;
+  transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+  border: none;
+  letter-spacing: 0.02em;
+}
+.header-link:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
 }
 
-.header-link:hover, .header-link.active {
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-}
+/* per-course pastel pill colours */
+.header-link--sdet   { background: linear-gradient(135deg, #818cf8, #6366f1); box-shadow: 0 2px 10px rgba(99,102,241,0.45); }
+.header-link--java   { background: linear-gradient(135deg, #fbbf24, #f97316); box-shadow: 0 2px 10px rgba(251,191,36,0.45); }
+.header-link--python { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 2px 10px rgba(52,211,153,0.45); }
+.header-link--sql    { background: linear-gradient(135deg, #38bdf8, #0284c7); box-shadow: 0 2px 10px rgba(56,189,248,0.45); }
+
+.header-link--sdet:hover   { box-shadow: 0 6px 20px rgba(99,102,241,0.65); }
+.header-link--java:hover   { box-shadow: 0 6px 20px rgba(251,191,36,0.65); }
+.header-link--python:hover { box-shadow: 0 6px 20px rgba(52,211,153,0.65); }
+.header-link--sql:hover    { box-shadow: 0 6px 20px rgba(56,189,248,0.65); }
 
 .app-body {
   display: flex;

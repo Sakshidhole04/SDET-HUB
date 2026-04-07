@@ -49,10 +49,10 @@ function AppContent() {
           {sidebarOpen ? '✕' : '☰'}
         </button>
         <nav className="header-nav">
-          <Link to="/sdet" className="header-link">✏️ SDET</Link>
-          <Link to="/java" className="header-link">☕ Java</Link>
-          <Link to="/python" className="header-link">🐍 Python</Link>
-          <Link to="/sql" className="header-link">🗄️ SQL</Link>
+          <Link to="/sdet"   className="header-link header-link--sdet">✏️ SDET</Link>
+          <Link to="/java"   className="header-link header-link--java">☕ Java</Link>
+          <Link to="/python" className="header-link header-link--python">🐍 Python</Link>
+          <Link to="/sql"    className="header-link header-link--sql">🗄️ SQL</Link>
         </nav>
       </header>
 

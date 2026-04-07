@@ -43,13 +43,17 @@ export default function CourseTopicPage({ courses, baseRoute, prefix }) {
 
   return (
     <div className="topic-page">
-      <div className="topic-breadcrumb">
-        <span>{chapter.icon} {chapter.title}</span>
-        <span className="breadcrumb-sep">›</span>
-        <span>{lesson.title}</span>
-        <span className="breadcrumb-sep">·</span>
-        <span className="read-time">⏱ {mins} min read</span>
-        {done && <span className="breadcrumb-done">✓ Completed</span>}
+
+      {/* ── LESSON HERO ── */}
+      <div className="lesson-hero" style={{'--lh-col': chapter.color || '#6366f1'}}>
+        <div className="lesson-hero-badge">{chapter.icon} {chapter.title}</div>
+        <h1 className="lesson-hero-title">{lesson.title}</h1>
+        <p className="lesson-hero-meta">
+          <span>⏱ {mins} min read</span>
+          <span className="lh-sep">·</span>
+          <span>Lesson {currentId} of {chapter.subtopics.length}</span>
+          {done && <><span className="lh-sep">·</span><span className="lh-done">✓ Completed</span></>}
+        </p>
       </div>
 
       <div className="topic-content markdown-body">

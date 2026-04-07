@@ -44,13 +44,17 @@ export default function TopicPage() {
 
   return (
     <div className="topic-page">
-      <div className="topic-breadcrumb">
-        <span>{topic.icon} {topic.title}</span>
-        <span className="breadcrumb-sep">›</span>
-        <span>{subtopic.title}</span>
-        <span className="breadcrumb-sep">·</span>
-        <span className="read-time">⏱ {mins} min read</span>
-        {done && <span className="breadcrumb-done">✓ Completed</span>}
+
+      {/* ── LESSON HERO ── */}
+      <div className="lesson-hero" style={{'--lh-col': topic.color || '#6366f1'}}>
+        <div className="lesson-hero-badge">{topic.icon} {topic.title}</div>
+        <h1 className="lesson-hero-title">{subtopic.title}</h1>
+        <p className="lesson-hero-meta">
+          <span>⏱ {mins} min read</span>
+          <span className="lh-sep">·</span>
+          <span>Lesson {currentId} of {topic.subtopics.length}</span>
+          {done && <><span className="lh-sep">·</span><span className="lh-done">✓ Completed</span></>}
+        </p>
       </div>
 
       <div className="topic-content markdown-body">

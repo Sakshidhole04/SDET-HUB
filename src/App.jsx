@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import JavaSidebar from './components/JavaSidebar';
 import Home from './pages/Home';
@@ -10,14 +10,50 @@ import JavaHome from './pages/JavaHome';
 import JavaTopicPage from './pages/JavaTopicPage';
 import JavaCodeEditor from './pages/JavaCodeEditor';
 import { ProgressProvider } from './context/ProgressContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import CourseSidebar from './components/CourseSidebar';
 import CourseTopicPage from './pages/CourseTopicPage';
 import CourseHome from './pages/CourseHome';
 import PythonHome from './pages/PythonHome';
 import SQLHome from './pages/SqlHome';
+import LoginPage from './pages/LoginPage';
 import { pythonCourses } from './data/pythonData';
 import { sqlCourses } from './data/sqlData';
 import './App.css';
+
+function UserMenu() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  if (!user) {
+    return (
+      <button className="header-login-btn" onClick={() => navigate('/login')}>
+        Log In
+      </button>
+    );
+  }
+
+  const initials = user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+  return (
+    <div className="user-menu" onBlur={() => setTimeout(() => setOpen(false), 150)}>
+      <button className="user-avatar" onClick={() => setOpen(o => !o)} title={user.name}>
+        {initials}
+      </button>
+      {open && (
+        <div className="user-dropdown">
+          <div className="user-dropdown-name">{user.name}</div>
+          <div className="user-dropdown-email">{user.email}</div>
+          <hr className="user-dropdown-sep" />
+          <button className="user-dropdown-logout" onClick={() => { logout(); setOpen(false); }}>
+            🚪 Log Out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -54,6 +90,7 @@ function AppContent() {
           <Link to="/python" className="header-link header-link--python">🐍 Python</Link>
           <Link to="/sql"    className="header-link header-link--sql">🗄️ SQL</Link>
         </nav>
+        <UserMenu />
       </header>
 
       {sidebarOpen && (
@@ -85,6 +122,7 @@ function AppContent() {
           <Route path="/python/:chapterId/:lessonId" element={<><CourseSidebar courses={pythonCourses} baseRoute="/python" prefix="python" title="🐍 Python" /><main className="main-content"><CourseTopicPage courses={pythonCourses} baseRoute="/python" prefix="python" /></main></>} />
           <Route path="/sql" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><SQLHome /></main></>} />
           <Route path="/sql/:chapterId/:lessonId" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><CourseTopicPage courses={sqlCourses} baseRoute="/sql" prefix="sql" /></main></>} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </div>
     </div>
@@ -94,9 +132,11 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter basename="/SDET-HUB">
-      <ProgressProvider>
-        <AppContent />
-      </ProgressProvider>
+      <AuthProvider>
+        <ProgressProvider>
+          <AppContent />
+        </ProgressProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

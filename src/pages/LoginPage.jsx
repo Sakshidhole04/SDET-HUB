@@ -8,6 +8,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState('login'); // 'login' | 'signup'
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }));
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     if (!form.email || !form.password) return setError('Please fill in all fields.');
     if (mode === 'signup' && !form.name.trim()) return setError('Please enter your name.');
     if (form.password.length < 6) return setError('Password must be at least 6 characters.');
@@ -26,12 +28,23 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result.error) return setError(result.error);
+
+    if (mode === 'signup') {
+      // After signup: switch to login, pre-fill email, show success banner
+      const signedEmail = form.email;
+      setMode('login');
+      setForm({ name: '', email: signedEmail, password: '' });
+      setSuccess('🎉 Account created! A welcome email has been sent. Please log in below to start learning.');
+      return;
+    }
+
     navigate('/');
   };
 
   const toggle = () => {
     setMode(m => m === 'login' ? 'signup' : 'login');
     setError('');
+    setSuccess('');
     setForm({ name: '', email: '', password: '' });
   };
 
@@ -105,6 +118,7 @@ export default function LoginPage() {
             </div>
 
             {error && <div className="auth-error">{error}</div>}
+            {success && <div className="auth-success">{success}</div>}
 
             <button className="auth-submit" type="submit" disabled={loading}>
               {loading ? 'Please wait…' : mode === 'login' ? 'Log In →' : 'Create Account →'}

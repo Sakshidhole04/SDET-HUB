@@ -23,13 +23,21 @@ const MODULES = [
 ];
 
 export default function ProfilePage() {
-  const { user, logout, updateName } = useAuth();
+  const { user, logout, updateName, updateMobile } = useAuth();
   const { done } = useProgress();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'progress');
+
+  // Name edit state
+  const [editingName, setEditingName] = useState(false);
   const [editName, setEditName] = useState(user?.name || '');
   const [saveMsg, setSaveMsg] = useState('');
+
+  // Mobile edit state
+  const [editingMobile, setEditingMobile] = useState(false);
+  const [editMobile, setEditMobile] = useState(user?.mobile || '');
+  const [mobileMsg, setMobileMsg] = useState('');
 
   // Sync tab when URL ?tab= changes (e.g. from dropdown)
   useEffect(() => {
@@ -59,11 +67,24 @@ export default function ProfilePage() {
     if (!trimmed) return;
     const result = await updateName(trimmed);
     if (result.error) {
-      setSaveMsg('Error: ' + result.error);
+      setSaveMsg('❌ ' + result.error);
     } else {
-      setSaveMsg('Name updated successfully!');
+      setSaveMsg('✅ Name updated!');
+      setEditingName(false);
     }
     setTimeout(() => setSaveMsg(''), 3000);
+  }
+
+  async function handleSaveMobile(e) {
+    e.preventDefault();
+    const result = await updateMobile(editMobile.trim());
+    if (result.error) {
+      setMobileMsg('❌ ' + result.error);
+    } else {
+      setMobileMsg('✅ Mobile number updated!');
+      setEditingMobile(false);
+    }
+    setTimeout(() => setMobileMsg(''), 3000);
   }
 
   return (
@@ -137,22 +158,64 @@ export default function ProfilePage() {
           <div className="pp-settings-card">
             <h3 className="pp-settings-title">Account Settings</h3>
 
-            <form className="pp-settings-form" onSubmit={handleSaveName}>
+            {/* Display Name */}
+            <div className="pp-settings-row">
               <label className="pp-settings-label">Display Name</label>
-              <input
-                className="pp-settings-input"
-                value={editName}
-                onChange={e => setEditName(e.target.value)}
-                placeholder="Your name"
-                maxLength={40}
-              />
-              <button type="submit" className="pp-settings-save">Save Name</button>
+              {editingName ? (
+                <form className="pp-settings-form pp-inline-form" onSubmit={handleSaveName}>
+                  <input
+                    className="pp-settings-input"
+                    value={editName}
+                    onChange={e => setEditName(e.target.value)}
+                    placeholder="Your name"
+                    maxLength={40}
+                    autoFocus
+                  />
+                  <div className="pp-edit-actions">
+                    <button type="submit" className="pp-settings-save">Save</button>
+                    <button type="button" className="pp-edit-cancel" onClick={() => { setEditingName(false); setEditName(user.name); }}>Cancel</button>
+                  </div>
+                </form>
+              ) : (
+                <div className="pp-settings-static-row">
+                  <span className="pp-settings-static">{user.name}</span>
+                  <button className="pp-edit-btn" onClick={() => setEditingName(true)}>✏️ Edit</button>
+                </div>
+              )}
               {saveMsg && <div className="pp-settings-msg">{saveMsg}</div>}
-            </form>
+            </div>
 
+            {/* Email */}
             <div className="pp-settings-row">
               <label className="pp-settings-label">Email</label>
               <div className="pp-settings-static">{user.email}</div>
+            </div>
+
+            {/* Mobile Number */}
+            <div className="pp-settings-row">
+              <label className="pp-settings-label">Mobile Number <span style={{color:'#9ca3af',fontSize:'0.8rem'}}>(optional)</span></label>
+              {editingMobile ? (
+                <form className="pp-settings-form pp-inline-form" onSubmit={handleSaveMobile}>
+                  <input
+                    className="pp-settings-input"
+                    value={editMobile}
+                    onChange={e => setEditMobile(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    maxLength={20}
+                    autoFocus
+                  />
+                  <div className="pp-edit-actions">
+                    <button type="submit" className="pp-settings-save">Save</button>
+                    <button type="button" className="pp-edit-cancel" onClick={() => { setEditingMobile(false); setEditMobile(user.mobile || ''); }}>Cancel</button>
+                  </div>
+                </form>
+              ) : (
+                <div className="pp-settings-static-row">
+                  <span className="pp-settings-static">{user.mobile || <span style={{color:'#9ca3af'}}>Not added</span>}</span>
+                  <button className="pp-edit-btn" onClick={() => setEditingMobile(true)}>✏️ {user.mobile ? 'Edit' : 'Add'}</button>
+                </div>
+              )}
+              {mobileMsg && <div className="pp-settings-msg">{mobileMsg}</div>}
             </div>
 
             <hr className="pp-settings-sep" />

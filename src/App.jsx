@@ -83,6 +83,15 @@ function UserMenu() {
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Redirect to home when session expires while on a protected page
+  useEffect(() => {
+    if (!user && location.pathname !== '/' && location.pathname !== '/login') {
+      navigate('/', { replace: true });
+    }
+  }, [user, location.pathname, navigate]);
 
   // Scroll to top on every route change
   useEffect(() => {

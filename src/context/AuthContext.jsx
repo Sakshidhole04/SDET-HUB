@@ -150,12 +150,21 @@ export function AuthProvider({ children }) {
 
   const forgotPassword = useCallback(async (email) => {
     try {
-      await supabase.functions.invoke('forgot-password', {
-        body: { email: email.toLowerCase().trim() },
-      });
-      // Always return success (don't reveal if email exists)
+      const res = await fetch(
+        'https://umarnjtvdyvxbeyuppkg.supabase.co/functions/v1/forgot-password',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtYXJuanR2ZHl2eGJleXVwcGtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjE3MzQsImV4cCI6MjA5MTE5NzczNH0.kLPolBGznij9A3W16XpfnMEm0DaJIhSBv8SI4u8ufA0`,
+          },
+          body: JSON.stringify({ email: email.toLowerCase().trim() }),
+        }
+      );
+      console.log('forgotPassword status:', res.status);
       return { success: true };
-    } catch {
+    } catch (e) {
+      console.error('forgotPassword error:', e);
       return { error: 'Failed to send reset email. Please try again.' };
     }
   }, []);

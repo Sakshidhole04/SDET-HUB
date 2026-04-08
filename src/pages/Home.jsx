@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 /* ── Typewriter ── */
 const TYPED = ['Automation Testing', 'Java Development', 'Python Scripting', 'SQL Mastery', 'SDET Skills'];
@@ -262,9 +263,16 @@ const TESTIMONIALS = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { text: typed, idx: typedIdx } = useTypewriter();
   const coursesRef = useRef(null);
   const [activeFeature, setActiveFeature] = useState(null);
+
+  // Redirect to login if not authenticated
+  const goAuth = (route) => {
+    if (!user) { navigate('/login'); return; }
+    navigate(route);
+  };
 
   return (
     <div className="lp-wrap">
@@ -289,8 +297,8 @@ export default function Home() {
             Structured courses built for SDET &amp; Dev roles. Code in browser. Track progress. Start free.
           </p>
           <div className="lp-hero-btns">
-            <button className="lp-btn-primary" onClick={() => coursesRef.current?.scrollIntoView({ behavior: 'smooth' })}>Start Learning Free →</button>
-            <button className="lp-btn-ghost" onClick={() => navigate(TYPED_ROUTES[typedIdx])}>Explore {TYPED_LABELS[typedIdx]}</button>
+            <button className="lp-btn-primary" onClick={() => { if (!user) { navigate('/login'); return; } coursesRef.current?.scrollIntoView({ behavior: 'smooth' }); }}>Start Learning Free →</button>
+            <button className="lp-btn-ghost" onClick={() => goAuth(TYPED_ROUTES[typedIdx])}>Explore {TYPED_LABELS[typedIdx]}</button>
           </div>
           <div className="lp-stats-row">
             <div className="lp-stat lp-stat--purple"><strong><Counter to={50000} suffix="+" /></strong><span>Learners</span></div>
@@ -311,7 +319,7 @@ export default function Home() {
         <p className="lp-sec-sub">Industry-aligned courses with exercises and progress tracking</p>
         <div className="lp-course-grid">
           {COURSES.map(c => (
-            <div key={c.route} className="lp-card" style={{ '--ca': c.col }} onClick={() => navigate(c.route)}>
+            <div key={c.route} className="lp-card" style={{ '--ca': c.col }} onClick={() => goAuth(c.route)}>
               <div className="lp-card-hd">
                 <span className="lp-card-badge">{c.badge}</span>
                 <span className="lp-card-icon">{c.icon}</span>
@@ -319,7 +327,7 @@ export default function Home() {
               <h3 className="lp-card-title">{c.title}</h3>
               <p className="lp-card-desc">{c.desc}</p>
               <div className="lp-card-tags">{c.tags.map(t => <span key={t} className="lp-ctag">{t}</span>)}</div>
-              <button className="lp-card-btn" onClick={e => { e.stopPropagation(); navigate(c.route); }}>Start Learning →</button>
+              <button className="lp-card-btn" onClick={e => { e.stopPropagation(); goAuth(c.route); }}>Start Learning →</button>
             </div>
           ))}
         </div>
@@ -334,8 +342,8 @@ export default function Home() {
           {FEATURES.map((f, i) => (
             <div key={f.title} className="lp-feat-card lp-feat-card--link"
               style={{'--fc': f.color}}
-              onClick={() => setActiveFeature(f)} role="button" tabIndex={0}
-              onKeyDown={e => e.key === 'Enter' && setActiveFeature(f)}>
+              onClick={() => { if (!user) { navigate('/login'); return; } setActiveFeature(f); }} role="button" tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && (!user ? navigate('/login') : setActiveFeature(f))}>
               <div className="lp-feat-num">{String(i+1).padStart(2,'0')}</div>
               <div className="lp-feat-icon-wrap">
                 <span className="lp-feat-icon">{f.icon}</span>
@@ -377,7 +385,7 @@ export default function Home() {
       </section>
 
       {activeFeature && (
-        <FeatureSpotlight feat={activeFeature} onClose={() => setActiveFeature(null)} onNavigate={navigate} />
+        <FeatureSpotlight feat={activeFeature} onClose={() => setActiveFeature(null)} onNavigate={goAuth} />
       )}
 
       {/* ── FOOTER ── */}

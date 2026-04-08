@@ -12,30 +12,30 @@ serve(async (req) => {
 
   try {
     const { name, email } = await req.json();
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    const BREVO_API_KEY = Deno.env.get('BREVO_API_KEY');
 
-    if (!RESEND_API_KEY) {
-      return new Response(JSON.stringify({ error: 'RESEND_API_KEY not configured' }), {
+    if (!BREVO_API_KEY) {
+      return new Response(JSON.stringify({ error: 'BREVO_API_KEY not configured' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const res = await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'api-key': BREVO_API_KEY,
       },
       body: JSON.stringify({
-        from: 'TestForge <onboarding@resend.dev>',
-        to: [email],
+        sender: { name: 'TestForge', email: 'dholesakshi46@gmail.com' },
+        to: [{ email, name }],
         subject: `Welcome to TestForge, ${name}! 🎓`,
-        html: `
+        htmlContent: `
           <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:32px;background:#f9f7ff;border-radius:16px;">
             <div style="text-align:center;margin-bottom:24px;">
               <h1 style="color:#7c3aed;font-size:28px;margin:0;">🎓 TestForge</h1>
-              <p style="color:#7c6fa0;margin:4px 0 0;">Master SDET & Dev Skills. Free.</p>
+              <p style="color:#7c6fa0;margin:4px 0 0;">Master SDET &amp; Dev Skills. Free.</p>
             </div>
             <div style="background:#fff;border-radius:12px;padding:28px;border:1px solid rgba(196,181,253,0.3);">
               <h2 style="color:#2d1f6e;margin-top:0;">Welcome, ${name}! 🎉</h2>
@@ -44,7 +44,7 @@ serve(async (req) => {
               </p>
               <ul style="color:#4b4580;line-height:2;">
                 <li>✏️ <strong>SDET</strong> — Selenium, TestNG, and more</li>
-                <li>☕ <strong>Java</strong> — Core Java & OOP</li>
+                <li>☕ <strong>Java</strong> — Core Java &amp; OOP</li>
                 <li>🐍 <strong>Python</strong> — Python fundamentals</li>
                 <li>🗄️ <strong>SQL</strong> — Database queries</li>
               </ul>
@@ -65,14 +65,17 @@ serve(async (req) => {
     });
 
     const data = await res.json();
+    console.log('Brevo response:', JSON.stringify(data));
     return new Response(JSON.stringify(data), {
       status: res.status,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (err) {
+    console.error('Error:', String(err));
     return new Response(JSON.stringify({ error: String(err) }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 });
+

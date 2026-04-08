@@ -30,6 +30,7 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'progress');
   const [editName, setEditName] = useState(user?.name || '');
   const [saveMsg, setSaveMsg] = useState('');
+  const [importMsg, setImportMsg] = useState({ text: '', ok: true });
 
   // Sync tab when URL ?tab= changes (e.g. from dropdown)
   useEffect(() => {
@@ -52,6 +53,42 @@ export default function ProfilePage() {
   const totalCompleted = moduleStats.reduce((s, m) => s + m.completed, 0);
   const totalLessons   = moduleStats.reduce((s, m) => s + m.total, 0);
   const overallPct     = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
+
+  function handleExport() {
+    const data = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      user: { name: user.name, email: user.email },
+      progress: JSON.parse(localStorage.getItem('testforge_progress') || '{}'),
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `testforge-backup-${user.email}-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImport(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!data.progress || typeof data.progress !== 'object') throw new Error('Invalid file');
+        localStorage.setItem('testforge_progress', JSON.stringify(data.progress));
+        setImportMsg({ text: `✅ Progress restored from ${data.exportedAt?.slice(0,10) || 'backup'}! Reloading...`, ok: true });
+        setTimeout(() => window.location.reload(), 1500);
+      } catch {
+        setImportMsg({ text: '❌ Invalid backup file. Please use a TestForge export file.', ok: false });
+        setTimeout(() => setImportMsg({ text: '', ok: true }), 4000);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
 
   function handleSaveName(e) {
     e.preventDefault();
@@ -159,6 +196,26 @@ export default function ProfilePage() {
             <div className="pp-settings-row">
               <label className="pp-settings-label">Email</label>
               <div className="pp-settings-static">{user.email}</div>
+            </div>
+
+            <hr className="pp-settings-sep" />
+
+            {/* Data Backup */}
+            <div className="pp-backup-section">
+              <div className="pp-backup-title">💾 Data Backup</div>
+              <p className="pp-backup-desc">Export your progress as a file and import it on any device or browser to restore it.</p>
+              <div className="pp-backup-btns">
+                <button className="pp-backup-export" onClick={handleExport}>
+                  ⬇️ Export Progress
+                </button>
+                <label className="pp-backup-import-label">
+                  ⬆️ Import Progress
+                  <input type="file" accept=".json" onChange={handleImport} style={{display:'none'}} />
+                </label>
+              </div>
+              {importMsg.text && (
+                <div className={`pp-backup-msg${importMsg.ok ? '' : ' error'}`}>{importMsg.text}</div>
+              )}
             </div>
 
             <hr className="pp-settings-sep" />

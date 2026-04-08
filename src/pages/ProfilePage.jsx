@@ -23,7 +23,7 @@ const MODULES = [
 ];
 
 export default function ProfilePage() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateName } = useAuth();
   const { done } = useProgress();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -90,22 +90,16 @@ export default function ProfilePage() {
     e.target.value = '';
   }
 
-  function handleSaveName(e) {
+  async function handleSaveName(e) {
     e.preventDefault();
     const trimmed = editName.trim();
     if (!trimmed) return;
-    // Update localStorage session
-    const KEY = 'testforge_user';
-    const session = { ...user, name: trimmed };
-    localStorage.setItem(KEY, JSON.stringify(session));
-    // Update users list too
-    const USERS_KEY = 'testforge_users';
-    try {
-      const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-      const updated = users.map(u => u.email === user.email ? { ...u, name: trimmed } : u);
-      localStorage.setItem(USERS_KEY, JSON.stringify(updated));
-    } catch {}
-    setSaveMsg('Name updated! Refresh to see changes in header.');
+    const result = await updateName(trimmed);
+    if (result.error) {
+      setSaveMsg('Error: ' + result.error);
+    } else {
+      setSaveMsg('Name updated successfully!');
+    }
     setTimeout(() => setSaveMsg(''), 3000);
   }
 

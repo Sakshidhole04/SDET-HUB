@@ -20,9 +20,9 @@ export default function LoginPage() {
     if (form.password.length < 6) return setError('Password must be at least 6 characters.');
 
     setLoading(true);
-    const result = mode === 'login'
+    const result = await (mode === 'login'
       ? login(form.email, form.password)
-      : signup(form.name.trim(), form.email, form.password);
+      : signup(form.name.trim(), form.email, form.password));
     setLoading(false);
 
     if (result.error) return setError(result.error);

@@ -1,16 +1,16 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
-const KEY = 'testforge_user';
-const SESSION_TTL = 60 * 60 * 1000; // 1 hour in ms
+const SESSION_KEY = 'testforge_user';
+const SESSION_TTL = 60 * 60 * 1000; // 1 hour
 
-function loadUser() {
+function loadSession() {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(SESSION_KEY);
     if (!raw) return null;
     const session = JSON.parse(raw);
-    // Expire check on load (e.g. after refresh)
     if (session?.loginAt && Date.now() - session.loginAt > SESSION_TTL) {
-      localStorage.removeItem(KEY);
+      localStorage.removeItem(SESSION_KEY);
       return null;
     }
     return session || null;
@@ -20,69 +20,91 @@ function loadUser() {
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(loadUser);
+  const [user, setUser] = useState(loadSession);
 
-  // Check session expiry every minute while app is open
+  // Auto-expire session every minute
   useEffect(() => {
     const interval = setInterval(() => {
-      const raw = localStorage.getItem(KEY);
+      const raw = localStorage.getItem(SESSION_KEY);
       if (!raw) return;
       try {
         const session = JSON.parse(raw);
         if (session?.loginAt && Date.now() - session.loginAt > SESSION_TTL) {
-          localStorage.removeItem(KEY);
+          localStorage.removeItem(SESSION_KEY);
           setUser(null);
         }
       } catch {}
-    }, 60 * 1000); // check every 60 seconds
+    }, 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // users stored as { name, email, password } array
-  const USERS_KEY = 'testforge_users';
-  function getUsers() {
-    try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; }
-    catch { return []; }
-  }
-  function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  }
+  const signup = useCallback(async (name, email, password) => {
+    const normalEmail = email.toLowerCase().trim();
 
-  const signup = useCallback((name, email, password) => {
-    const users = getUsers();
-    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return { error: 'An account with this email already exists.' };
-    }
-    const newUser = { name, email: email.toLowerCase(), password };
-    saveUsers([...users, newUser]);
-    const session = { name, email: email.toLowerCase(), loginAt: Date.now() };
-    localStorage.setItem(KEY, JSON.stringify(session));
+    // Check duplicate
+    const { data: existing } = await supabase
+      .from('users')
+      .select('email')
+      .eq('email', normalEmail)
+      .maybeSingle();
+
+    if (existing) return { error: 'An account with this email already exists.' };
+
+    const { error } = await supabase
+      .from('users')
+      .insert({ name: name.trim(), email: normalEmail, password });
+
+    if (error) return { error: 'Failed to create account. Please try again.' };
+
+    const session = { name: name.trim(), email: normalEmail, loginAt: Date.now() };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     setUser(session);
     return { success: true };
   }, []);
 
-  const login = useCallback((email, password) => {
-    const users = getUsers();
-    const found = users.find(
-      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
+  const login = useCallback(async (email, password) => {
+    const normalEmail = email.toLowerCase().trim();
+
+    const { data: found } = await supabase
+      .from('users')
+      .select('name, email')
+      .eq('email', normalEmail)
+      .eq('password', password)
+      .maybeSingle();
+
     if (!found) return { error: 'Invalid email or password.' };
+
     const session = { name: found.name, email: found.email, loginAt: Date.now() };
-    localStorage.setItem(KEY, JSON.stringify(session));
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     setUser(session);
     return { success: true };
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(KEY);
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem('testforge_progress');
     setUser(null);
   }, []);
 
+  const updateName = useCallback(async (newName) => {
+    if (!user) return { error: 'Not logged in.' };
+    const { error } = await supabase
+      .from('users')
+      .update({ name: newName })
+      .eq('email', user.email);
+    if (error) return { error: 'Failed to update name.' };
+    const session = { ...user, name: newName };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    setUser(session);
+    return { success: true };
+  }, [user]);
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, updateName }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export const useAuth = () => useContext(AuthContext);
+

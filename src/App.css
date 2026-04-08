@@ -629,7 +629,7 @@
 .landing-page { display: none; }
 
 /* Landing wrapper fills full flex row in app-body */
-.landing-main { flex: 1; overflow-y: auto; }
+.landing-main { flex: 1; overflow-y: auto; background: #faf8ff; }
 
 body { background: var(--bg); color: var(--text); }
 

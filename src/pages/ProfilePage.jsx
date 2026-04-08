@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useProgress } from '../context/ProgressContext';
 import { topics } from '../data/topics';
@@ -25,10 +25,17 @@ const MODULES = [
 export default function ProfilePage() {
   const { user, logout } = useAuth();
   const { done } = useProgress();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'progress');
   const [editName, setEditName] = useState(user?.name || '');
   const [saveMsg, setSaveMsg] = useState('');
+
+  // Sync tab when URL ?tab= changes (e.g. from dropdown)
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) setActiveTab(tab);
+  }, [searchParams]);
 
   if (!user) return null;
 
@@ -67,6 +74,9 @@ export default function ProfilePage() {
 
   return (
     <div className="pp-page">
+      {/* Back button */}
+      <button className="pp-back-btn" onClick={() => navigate(-1)}>← Back to Learning</button>
+
       {/* Profile Header */}
       <div className="pp-header">
         <div className="pp-avatar">{initials}</div>

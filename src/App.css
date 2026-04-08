@@ -628,6 +628,9 @@
 /* keep old landing-* classes for any legacy references */
 .landing-page { display: none; }
 
+/* Landing wrapper fills full flex row in app-body */
+.landing-main { flex: 1; overflow-y: auto; }
+
 body { background: var(--bg); color: var(--text); }
 
 a { color: inherit; text-decoration: none; }

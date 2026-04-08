@@ -4,22 +4,11 @@ import { supabase } from '../lib/supabase';
 const SESSION_KEY = 'testforge_user';
 const SESSION_TTL = 60 * 60 * 1000; // 1 hour
 
-// ── Welcome email via EmailJS (configure keys in .env) ──────────────────────
-async function sendWelcomeEmail(name, email) {
-  const serviceId  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-  if (!serviceId || !templateId || !publicKey) return; // skip if not configured
+// ── Welcome email via Supabase Edge Function + Resend ───────────────────────
+async function sendWelcomeEmail(supabaseClient, name, email) {
   try {
-    await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        service_id: serviceId,
-        template_id: templateId,
-        user_id: publicKey,
-        template_params: { to_name: name, to_email: email },
-      }),
+    await supabaseClient.functions.invoke('send-welcome-email', {
+      body: { name, email },
     });
   } catch (e) {
     console.warn('Welcome email could not be sent:', e);
@@ -78,8 +67,8 @@ export function AuthProvider({ children }) {
 
     if (error) return { error: 'Failed to create account. Please try again.' };
 
-    // Send welcome email (non-blocking, requires EmailJS .env config)
-    sendWelcomeEmail(name.trim(), normalEmail);
+    // Send welcome email via Supabase Edge Function (non-blocking)
+    sendWelcomeEmail(supabase, name.trim(), normalEmail);
 
     // Do NOT auto-login — user must log in manually
     return { success: true };

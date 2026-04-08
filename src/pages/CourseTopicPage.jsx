@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import CodeBlock from '../components/CodeBlock';
 import { useProgress } from '../context/ProgressContext';
+import { useBookmarks } from '../context/BookmarkContext';
 
 function readTime(text) {
   return Math.max(1, Math.round(text.trim().split(/\s+/).length / 200));
@@ -13,6 +14,7 @@ export default function CourseTopicPage({ courses, baseRoute, prefix }) {
   const { chapterId, lessonId } = useParams();
   const navigate = useNavigate();
   const { isDone, toggle } = useProgress();
+  const { isBookmarked, toggleBookmark, trackRecent } = useBookmarks();
   const [openExercises, setOpenExercises] = useState({});
   const [showTop, setShowTop] = useState(false);
 
@@ -28,6 +30,13 @@ export default function CourseTopicPage({ courses, baseRoute, prefix }) {
   const lessonKey = `${prefix}-${chapterId}-${currentId}`;
   const done = isDone(lessonKey);
   const mins = readTime(lesson.content);
+
+  const courseLabel = prefix === 'java' ? 'Java' : prefix === 'python' ? 'Python' : 'SQL';
+  const courseIcon  = prefix === 'java' ? '☕' : prefix === 'python' ? '🐍' : '🗄️';
+  const bookmarkItem = { route: `${baseRoute}/${chapterId}/${currentId}`, title: lesson.title, course: courseLabel, section: chapter.title, icon: courseIcon };
+
+  // Track recently viewed
+  useEffect(() => { trackRecent(bookmarkItem); }, [chapterId, currentId]); // eslint-disable-line
 
   const toggleExercise = (i) => setOpenExercises(p => ({ ...p, [i]: !p[i] }));
 
@@ -54,6 +63,11 @@ export default function CourseTopicPage({ courses, baseRoute, prefix }) {
           <span>Lesson {currentId} of {chapter.subtopics.length}</span>
           {done && <><span className="lh-sep">·</span><span className="lh-done">✓ Completed</span></>}
         </p>
+        <button
+          className={`lesson-bookmark-btn${isBookmarked(bookmarkItem.route) ? ' bookmarked' : ''}`}
+          onClick={() => toggleBookmark(bookmarkItem)}
+          title={isBookmarked(bookmarkItem.route) ? 'Remove bookmark' : 'Bookmark this lesson'}
+        >{isBookmarked(bookmarkItem.route) ? '🔖 Bookmarked' : '📌 Bookmark'}</button>
       </div>
 
       <div className="topic-content markdown-body">

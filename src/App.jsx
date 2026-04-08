@@ -11,6 +11,7 @@ import JavaTopicPage from './pages/JavaTopicPage';
 import JavaCodeEditor from './pages/JavaCodeEditor';
 import { ProgressProvider } from './context/ProgressContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { BookmarkProvider, useBookmarks } from './context/BookmarkContext';
 import CourseSidebar from './components/CourseSidebar';
 import CourseTopicPage from './pages/CourseTopicPage';
 import CourseHome from './pages/CourseHome';
@@ -18,6 +19,7 @@ import PythonHome from './pages/PythonHome';
 import SQLHome from './pages/SqlHome';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
+import SearchModal from './components/SearchModal';
 import { pythonCourses } from './data/pythonData';
 import { sqlCourses } from './data/sqlData';
 import './App.css';
@@ -82,9 +84,23 @@ function UserMenu() {
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { dark, toggleDark } = useBookmarks();
+
+  // Keyboard shortcut: Ctrl+K or Cmd+K to open search
+  useEffect(() => {
+    const onKey = e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(o => !o);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
 
   // Redirect to home when session expires while on a protected page
   useEffect(() => {
@@ -124,6 +140,13 @@ function AppContent() {
           <Link to="/python" className="header-link header-link--python">🐍 Python</Link>
           <Link to="/sql"    className="header-link header-link--sql">🗄️ SQL</Link>
         </nav>
+        <button className="header-search-btn" onClick={() => setSearchOpen(true)} title="Search (Ctrl+K)">
+          🔍 <span className="header-search-label">Search</span>
+          <kbd className="header-search-kbd">Ctrl K</kbd>
+        </button>
+        <button className="header-dark-btn" onClick={toggleDark} title={dark ? 'Light mode' : 'Dark mode'}>
+          {dark ? '☀️' : '🌙'}
+        </button>
         <UserMenu />
       </header>
 
@@ -132,6 +155,7 @@ function AppContent() {
       )}
 
       <div className="app-body">
+        {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
         <Routes>
           <Route path="/" element={<main className="landing-main"><Home /></main>} />
           <Route path="/sdet" element={<><Sidebar /><main className="main-content"><SdetHome /></main></>} />
@@ -168,9 +192,11 @@ export default function App() {
   return (
     <BrowserRouter basename="/SDET-HUB">
       <AuthProvider>
-        <ProgressProvider>
-          <AppContent />
-        </ProgressProvider>
+        <BookmarkProvider>
+          <ProgressProvider>
+            <AppContent />
+          </ProgressProvider>
+        </BookmarkProvider>
       </AuthProvider>
     </BrowserRouter>
   );

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useProgress } from '../context/ProgressContext';
+import { useBookmarks } from '../context/BookmarkContext';
 import { topics } from '../data/topics';
 import { javaCourses } from '../data/javaData';
 import { pythonCourses } from '../data/pythonData';
@@ -25,6 +26,7 @@ const MODULES = [
 export default function ProfilePage() {
   const { user, logout, updateName, updateMobile } = useAuth();
   const { done } = useProgress();
+  const { bookmarks, recent, toggleBookmark } = useBookmarks();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'progress');
@@ -129,6 +131,8 @@ export default function ProfilePage() {
       {/* Tabs */}
       <div className="pp-tabs">
         <button className={`pp-tab${activeTab === 'progress' ? ' active' : ''}`} onClick={() => setActiveTab('progress')}>📊 My Progress</button>
+        <button className={`pp-tab${activeTab === 'bookmarks' ? ' active' : ''}`} onClick={() => setActiveTab('bookmarks')}>🔖 Bookmarks {bookmarks.length > 0 && <span className="pp-tab-badge">{bookmarks.length}</span>}</button>
+        <button className={`pp-tab${activeTab === 'recent' ? ' active' : ''}`} onClick={() => setActiveTab('recent')}>🕐 Recently Viewed</button>
         <button className={`pp-tab${activeTab === 'settings' ? ' active' : ''}`} onClick={() => setActiveTab('settings')}>⚙️ Settings</button>
       </div>
 
@@ -150,6 +154,56 @@ export default function ProfilePage() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {activeTab === 'bookmarks' && (
+        <div className="pp-section">
+          {bookmarks.length === 0 ? (
+            <div className="pp-empty">
+              <div className="pp-empty-icon">📌</div>
+              <div className="pp-empty-title">No bookmarks yet</div>
+              <div className="pp-empty-sub">Click the Bookmark button on any lesson to save it here.</div>
+            </div>
+          ) : (
+            <div className="pp-lesson-list">
+              {bookmarks.map(b => (
+                <div key={b.route} className="pp-lesson-item">
+                  <span className="pp-li-icon">{b.icon}</span>
+                  <div className="pp-li-info">
+                    <Link to={b.route} className="pp-li-title">{b.title}</Link>
+                    <span className="pp-li-meta">{b.course} › {b.section}</span>
+                  </div>
+                  <button className="pp-li-remove" onClick={() => toggleBookmark(b)} title="Remove bookmark">✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'recent' && (
+        <div className="pp-section">
+          {recent.length === 0 ? (
+            <div className="pp-empty">
+              <div className="pp-empty-icon">🕐</div>
+              <div className="pp-empty-title">No recent lessons</div>
+              <div className="pp-empty-sub">Lessons you visit will appear here.</div>
+            </div>
+          ) : (
+            <div className="pp-lesson-list">
+              {recent.map(r => (
+                <div key={r.route} className="pp-lesson-item">
+                  <span className="pp-li-icon">{r.icon}</span>
+                  <div className="pp-li-info">
+                    <Link to={r.route} className="pp-li-title">{r.title}</Link>
+                    <span className="pp-li-meta">{r.course} › {r.section}</span>
+                  </div>
+                  <span className="pp-li-time">{new Date(r.visitedAt).toLocaleDateString()}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

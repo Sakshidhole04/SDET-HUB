@@ -129,8 +129,39 @@ export function AuthProvider({ children }) {
     return { success: true };
   }, [user]);
 
+  const updatePassword = useCallback(async (currentPassword, newPassword) => {
+    if (!user) return { error: 'Not logged in.' };
+    // verify current password
+    const { data: found } = await supabase
+      .from('users')
+      .select('email')
+      .eq('email', user.email)
+      .eq('password', currentPassword)
+      .maybeSingle();
+    if (!found) return { error: 'Current password is incorrect.' };
+    if (newPassword.length < 6) return { error: 'New password must be at least 6 characters.' };
+    const { error } = await supabase
+      .from('users')
+      .update({ password: newPassword })
+      .eq('email', user.email);
+    if (error) return { error: 'Failed to update password.' };
+    return { success: true };
+  }, [user]);
+
+  const forgotPassword = useCallback(async (email) => {
+    try {
+      await supabase.functions.invoke('forgot-password', {
+        body: { email: email.toLowerCase().trim() },
+      });
+      // Always return success (don't reveal if email exists)
+      return { success: true };
+    } catch {
+      return { error: 'Failed to send reset email. Please try again.' };
+    }
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, updateName, updateMobile }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, updateName, updateMobile, updatePassword, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );

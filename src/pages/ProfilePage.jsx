@@ -24,9 +24,9 @@ const MODULES = [
 ];
 
 export default function ProfilePage() {
-  const { user, logout, updateName, updateMobile } = useAuth();
+  const { user, logout, updateName, updateMobile, updatePassword } = useAuth();
   const { done } = useProgress();
-  const { bookmarks, recent, toggleBookmark } = useBookmarks();
+  const { bookmarks, recent, toggleBookmark, streak } = useBookmarks();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'progress');
@@ -40,6 +40,11 @@ export default function ProfilePage() {
   const [editingMobile, setEditingMobile] = useState(false);
   const [editMobile, setEditMobile] = useState(user?.mobile || '');
   const [mobileMsg, setMobileMsg] = useState('');
+
+  // Change password state
+  const [showChangePw, setShowChangePw] = useState(false);
+  const [pwForm, setPwForm] = useState({ current: '', next: '', confirm: '' });
+  const [pwMsg, setPwMsg] = useState('');
 
   // Sync tab when URL ?tab= changes (e.g. from dropdown)
   useEffect(() => {
@@ -89,6 +94,20 @@ export default function ProfilePage() {
     setTimeout(() => setMobileMsg(''), 3000);
   }
 
+  async function handleChangePassword(e) {
+    e.preventDefault();
+    if (pwForm.next !== pwForm.confirm) { setPwMsg('❌ New passwords do not match.'); return; }
+    const result = await updatePassword(pwForm.current, pwForm.next);
+    if (result.error) {
+      setPwMsg('❌ ' + result.error);
+    } else {
+      setPwMsg('✅ Password changed successfully!');
+      setPwForm({ current: '', next: '', confirm: '' });
+      setShowChangePw(false);
+    }
+    setTimeout(() => setPwMsg(''), 4000);
+  }
+
   return (
     <div className="pp-page">
       {/* Back button */}
@@ -101,6 +120,12 @@ export default function ProfilePage() {
           <div className="pp-name">{user.name}</div>
           <div className="pp-email">{user.email}</div>
           <div className="pp-badge">🎓 TestForge Learner</div>
+        </div>
+        <div className="pp-streak-display">
+          <div className="pp-streak-fire">🔥</div>
+          <div className="pp-streak-num">{streak.current}</div>
+          <div className="pp-streak-label">day streak</div>
+          {streak.longest > 0 && <div className="pp-streak-best">Best: {streak.longest}</div>}
         </div>
         <div className="pp-overall-ring">
           <div className="pp-ring-label">{overallPct}%</div>
@@ -274,6 +299,29 @@ export default function ProfilePage() {
 
             <hr className="pp-settings-sep" />
 
+            {/* Change Password */}
+            <div className="pp-settings-row">
+              <label className="pp-settings-label">Password</label>
+              {!showChangePw ? (
+                <div className="pp-settings-static-row">
+                  <span className="pp-settings-static">••••••••</span>
+                  <button className="pp-edit-btn" onClick={() => setShowChangePw(true)}>🔑 Change</button>
+                </div>
+              ) : (
+                <form className="pp-settings-form pp-inline-form" onSubmit={handleChangePassword}>
+                  <input className="pp-settings-input" type="password" placeholder="Current password" value={pwForm.current} onChange={e => setPwForm(f => ({...f, current: e.target.value}))} autoFocus />
+                  <input className="pp-settings-input" type="password" placeholder="New password (min 6 chars)" value={pwForm.next} onChange={e => setPwForm(f => ({...f, next: e.target.value}))} />
+                  <input className="pp-settings-input" type="password" placeholder="Confirm new password" value={pwForm.confirm} onChange={e => setPwForm(f => ({...f, confirm: e.target.value}))} />
+                  <div className="pp-edit-actions">
+                    <button type="submit" className="pp-settings-save">Update Password</button>
+                    <button type="button" className="pp-edit-cancel" onClick={() => { setShowChangePw(false); setPwForm({ current: '', next: '', confirm: '' }); }}>Cancel</button>
+                  </div>
+                </form>
+              )}
+              {pwMsg && <div className="pp-settings-msg">{pwMsg}</div>}
+            </div>
+
+            <hr className="pp-settings-sep" />
             <div className="pp-danger-zone">
               <div className="pp-danger-title">⚠️ Danger Zone</div>
               <button className="pp-danger-btn" onClick={() => {

@@ -1,0 +1,21 @@
+{
+  "name": "TestForge – SDET Learning",
+  "short_name": "TestForge",
+  "description": "Learn SDET, Java, Python & SQL – free structured learning platform",
+  "theme_color": "#6366f1",
+  "background_color": "#faf8ff",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/SDET-HUB/",
+  "start_url": "/SDET-HUB/",
+  "icons": [
+    {
+      "src": "/SDET-HUB/pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education"],
+  "lang": "en"
+}

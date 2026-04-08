@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useCallback, useEffect } from 'rea
 const BOOKMARKS_KEY = 'testforge_bookmarks';
 const RECENT_KEY    = 'testforge_recent';
 const DARK_KEY      = 'testforge_dark';
+const STREAK_KEY    = 'testforge_streak';
 const MAX_RECENT    = 10;
 
 function load(key, fallback) {
@@ -15,6 +16,7 @@ export function BookmarkProvider({ children }) {
   const [bookmarks, setBookmarks] = useState(() => load(BOOKMARKS_KEY, []));
   const [recent,    setRecent]    = useState(() => load(RECENT_KEY, []));
   const [dark,      setDark]      = useState(() => load(DARK_KEY, false));
+  const [streak,    setStreak]    = useState(() => load(STREAK_KEY, { current: 0, longest: 0, lastDate: null }));
 
   // Apply dark mode class to <html>
   useEffect(() => {
@@ -44,6 +46,19 @@ export function BookmarkProvider({ children }) {
   // Recently viewed tracker
   const trackRecent = useCallback((item) => {
     // item: { route, title, course, icon }
+    // Update streak on lesson visit
+    setStreak(prev => {
+      const today = new Date().toDateString();
+      if (prev.lastDate === today) return prev;
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      const continued = prev.lastDate === yesterday;
+      const newCurrent = continued ? prev.current + 1 : 1;
+      const newLongest = Math.max(prev.longest, newCurrent);
+      const next = { current: newCurrent, longest: newLongest, lastDate: today };
+      localStorage.setItem(STREAK_KEY, JSON.stringify(next));
+      return next;
+    });
+
     setRecent(prev => {
       const filtered = prev.filter(r => r.route !== item.route);
       const next = [{ ...item, visitedAt: Date.now() }, ...filtered].slice(0, MAX_RECENT);
@@ -53,7 +68,7 @@ export function BookmarkProvider({ children }) {
   }, []);
 
   return (
-    <BookmarkContext.Provider value={{ bookmarks, recent, dark, toggleDark, isBookmarked, toggleBookmark, trackRecent }}>
+    <BookmarkContext.Provider value={{ bookmarks, recent, dark, streak, toggleDark, isBookmarked, toggleBookmark, trackRecent }}>
       {children}
     </BookmarkContext.Provider>
   );

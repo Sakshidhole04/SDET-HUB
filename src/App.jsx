@@ -19,6 +19,7 @@ import PythonHome from './pages/PythonHome';
 import SQLHome from './pages/SqlHome';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import SearchModal from './components/SearchModal';
 import { pythonCourses } from './data/pythonData';
 import { sqlCourses } from './data/sqlData';
@@ -181,6 +182,7 @@ function AppContent() {
           <Route path="/sql" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><SQLHome /></main></>} />
           <Route path="/sql/:chapterId/:lessonId" element={<><CourseSidebar courses={sqlCourses} baseRoute="/sql" prefix="sql" title="🗄️ SQL" /><main className="main-content"><CourseTopicPage courses={sqlCourses} baseRoute="/sql" prefix="sql" /></main></>} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/profile" element={<main className="landing-main"><ProfilePage /></main>} />
         </Routes>
       </div>

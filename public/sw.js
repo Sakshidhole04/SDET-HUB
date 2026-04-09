@@ -1,4 +1,4 @@
-const CACHE_NAME = 'testforge-v1';
+const CACHE_NAME = 'testforge-v2';
 const SHELL = ['/SDET-HUB/', '/SDET-HUB/index.html'];
 
 self.addEventListener('install', e => {
